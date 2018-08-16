@@ -1,0 +1,16 @@
+query Releases($appName: String = "", $page: Int = 1, $endDate: String = "") {
+  releases(appName: $appName, page: $page, endDate: $endDate) {
+    authors {
+      gravatarURL
+      username
+    }
+    appName
+    commitsTotal
+    cacheId
+    date
+    environment
+    type
+    version
+    versionFrom
+  }
+}

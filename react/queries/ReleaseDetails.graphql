@@ -1,0 +1,13 @@
+query ReleaseDetails($appName: String, $cacheId: String) {
+  releaseDetails(appName: $appName, cacheId: $cacheId) {
+    appName
+    cacheId
+    commits {
+      title
+    }
+    dependencies {
+      name
+      version
+    }
+  }
+}
