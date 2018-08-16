@@ -1,0 +1,12 @@
+{
+  "pages": {
+    "releases": {
+      "path": "/releases"
+    }
+  },
+  "extensions": {
+    "releases": {
+      "component": "ReleasesPage"
+    }
+  }
+}

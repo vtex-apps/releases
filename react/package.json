@@ -1,0 +1,23 @@
+{
+  "name": "vtex.releases",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@types/graphql": "^0.13.4",
+    "@types/marked": "^0.4.0",
+    "@types/moment": "^2.13.0",
+    "@types/ramda": "^0.25.36",
+    "@types/react": "^16.4.7",
+    "@types/react-motion": "0.0.27",
+    "@types/react-no-ssr": "^1.1.1",
+    "@vtex/styleguide": "5.4.3",
+    "apollo-client": "^2.3.8",
+    "axios": "^0.18.0",
+    "graphql": "^0.13.2",
+    "marked": "^0.4.0",
+    "moment": "^2.22.2",
+    "ramda": "^0.25.0",
+    "react": "^16.4.2",
+    "react-apollo": "^2.1.11",
+    "react-motion": "^0.5.2"
+  }
+}
