@@ -1,14 +1,12 @@
-import { ApolloClient, ApolloQueryResult } from 'apollo-client'
 import { addIndex, map } from 'ramda'
 import React, { Component } from 'react'
-import { withApollo } from 'react-apollo'
+import { withApollo, WithApolloClient } from 'react-apollo'
 import { Badge, IconCaretRight, Spinner } from 'vtex.styleguide'
 
 import ReleaseDetails from '../queries/ReleaseDetails.graphql'
 import GithubIcon from '../icons/GithubIcon'
 
 interface DeploymentCardProps {
-  client: ApolloClient<any>
   deployment: Deployment
 }
 
@@ -22,9 +20,11 @@ interface ReleaseDetailsData {
   releaseDetails: Release
 }
 
-const mapWithIndex = addIndex(map)
+const mapAuthorWithIndex = addIndex<Author>(map)
+const mapCommitsWithIndex = addIndex<Commit>(map)
+const mapDependenciesWithIndex = addIndex<Dependency>(map)
 
-class DeploymentCard extends Component<DeploymentCardProps, DeploymentCardState> {
+class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, DeploymentCardState> {
   constructor(props: any) {
     super(props)
 
@@ -39,17 +39,15 @@ class DeploymentCard extends Component<DeploymentCardProps, DeploymentCardState>
     const { client } = this.props
     const { deployment } = this.state
 
-    client.query({
+    client.query<ReleaseDetailsData>({
       query: ReleaseDetails,
       variables: {
         appName: deployment.appName,
         cacheId: deployment.cacheId
       }
-    }).then((data: ApolloQueryResult<ReleaseDetailsData>) => {
-      const deploymentDetail = { 
-        dependencies: data.data.releaseDetails.dependencies,
-        commits: data.data.releaseDetails.commits 
-      }
+    }).then((data) => {
+      const { dependencies, commits } = data.data.releaseDetails
+      const deploymentDetail = { dependencies, commits }
     
       this.setState((prevState) => {
         return ({
@@ -86,21 +84,25 @@ class DeploymentCard extends Component<DeploymentCardProps, DeploymentCardState>
 
   public renderDetails = () => {
     const { deployment } = this.state
-    const commits = mapWithIndex((commit: Commit, index: number) => {
-      return(
-        <li key={commit.title + index}>{commit.title}</li>
-      )
-    }, deployment.commits)
+    const commits = deployment.commits 
+      ? mapCommitsWithIndex((commit: Commit, index: number) => {
+        return(
+          <li key={commit.title + index}>{commit.title}</li>
+        )
+      }, deployment.commits)
+      : []
 
-    const dependencies= mapWithIndex((dependency: Dependency, index: number) => {
-      return(
-        <div key={dependency.name + dependency.version + index} className="pr2 pb2 dib">
-          <Badge>
-            {dependency.name} - {dependency.version}
-          </Badge>
-        </div>
-      )
-    }, deployment.dependencies)
+    const dependencies = deployment.dependencies 
+      ? mapDependenciesWithIndex((dependency: Dependency, index: number) => {
+        return(
+          <div key={dependency.name + dependency.version + index} className="pr2 pb2 dib">
+            <Badge>
+              {dependency.name} - {dependency.version}
+            </Badge>
+          </div>
+        )
+      }, deployment.dependencies)
+      : []
 
     return (
       <div className="w-100 ph3 pt2 pb4 flex flex-column">
@@ -126,7 +128,7 @@ class DeploymentCard extends Component<DeploymentCardProps, DeploymentCardState>
 
   public render() {
     const { deployment, isLoading, isOpen } = this.state
-    const authors = mapWithIndex((author: Author, index: number) => {
+    const authors = mapAuthorWithIndex((author: Author, index: number) => {
       return (
         <div key={author.username + index} className="pl2">
           <img className="br-pill" src={author.gravatarURL} />

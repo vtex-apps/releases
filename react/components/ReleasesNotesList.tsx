@@ -26,30 +26,30 @@ interface ReleasesNotesState {
   releasesNotes: ReleaseNote[]
 }
 
-const mapWithIndex = addIndex(map)
+const mapNotesWithIndex = addIndex<ReleaseNote>(map)
 
 class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState> {
   constructor(props: any) {
     super(props)
 
     this.state = {
-      isLoading: props.releasesNotes.loading, 
+      isLoading: props.releasesNotes.loading,
       lastPage: false,
       nextPage: 2,
       releasesNotes: props.releasesNotes.releasesNotes
     }
   }
 
-  public componentDidUpdate(prevProps: ReleasesNotesProps, _) {
+  public componentDidUpdate(prevProps: ReleasesNotesProps, _: ReleasesNotesState) {
     const { releasesNotes: { loading: prevLoading } } = prevProps
     const { releasesNotes: curStateNotes } = this.state
     const { releasesNotes: { releasesNotes: curPropsNotes, loading: curLoading } } = this.props
 
     if (prevLoading && !curLoading && !curStateNotes) {
       this.setState((prevState) => {
-        return ({ 
-          ...prevState, 
-          isLoading: false, 
+        return ({
+          ...prevState,
+          isLoading: false,
           releasesNotes: curPropsNotes
         })
       })
@@ -59,12 +59,12 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
   public getPage = (page: number) => {
     const { client } = this.props
 
-    client.query({
+    client.query<ReleasesNotesData>({
       query: ReleasesNotes,
       variables: { page }
-    }).then((data: ApolloQueryResult<ReleasesNotesData>) => {
+    }).then((data) => {
       const releasesNotes = data.data.releasesNotes
-      console.log(data)
+
       this.setState((prevState) => {
         return ({
           ...prevState,
@@ -100,14 +100,14 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
 
   public render() {
     const { isLoading, releasesNotes } = this.state
-    const { releasesNotes: { error } } = this.props  
-    
+    const { releasesNotes: { error } } = this.props
+
     if (error) {
       console.error(error)
     }
-    console.log(releasesNotes)
+
     const notesList = releasesNotes
-      ? mapWithIndex((note: ReleaseNote, index: number) => {
+      ? mapNotesWithIndex((note: ReleaseNote, index: number) => {
         const noteDate = moment(new Date(note.date))
 
         const lastNote = index !== 0
@@ -116,8 +116,9 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
 
         const addDate =
           index === 0 ||
+          lastNote !== null &&
           noteDate.date() !== lastNote.date()
-        
+
         return (
           <div key={note.cacheId} className="flex flex-row w-100 pl9 pt8 justify-center">
             <div className="flex flex-column h-100 w5 mr7 pr7">
@@ -131,7 +132,7 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
         )
       }, releasesNotes)
       : []
-    console.log(notesList)
+
     return (
       <div
         className="releases-content w-100 flex flex-row flex-wrap items-center bg-light-silver pv4 overflow-y-scroll overflow-x-hidden"

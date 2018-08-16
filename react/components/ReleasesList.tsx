@@ -1,7 +1,6 @@
-import { ApolloClient, ApolloQueryResult } from 'apollo-client'
 import { addIndex, filter, map } from 'ramda'
 import React, { Component } from 'react'
-import { compose, graphql, withApollo } from 'react-apollo'
+import { compose, graphql, withApollo, WithApolloClient } from 'react-apollo'
 import moment from 'moment'
 import { Spinner } from 'vtex.styleguide'
 
@@ -11,26 +10,28 @@ import PublicationCard from './PublicationCard'
 import ReleaseTime from './ReleaseTime'
 
 interface ReleasesData {
-  releases?: any
+  releases: any
+}
+
+interface ReleasesQuery {
+  appName: string
 }
 
 interface ReleasesListProps {
   appName: string
-  client: ApolloClient<any>
-  releases?: any
   env: Environment
 }
 
 interface ReleasesListState {
   isLoading: boolean,
-  releases: any,
+  releases?: Release[],
   nextPage: number,
   lastPage: boolean
 }
 
-const mapWithIndex = addIndex(map)
+const mapReleasesWithIndex = addIndex<Release>(map)
 
-class ReleasesList extends Component<ReleasesListProps, ReleasesListState> {
+class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesListProps, ReleasesListState> {
   constructor(props: any) {
     super(props)
 
@@ -42,12 +43,16 @@ class ReleasesList extends Component<ReleasesListProps, ReleasesListState> {
     }
   }
 
-  public componentDidUpdate(prevProps: ReleasesListProps, _) {
+  public componentDidUpdate(prevProps: ReleasesListProps, _: ReleasesListState) {
     const { appName } = this.props
 
     if (prevProps.appName !== appName) {
       this.setState((prevState) => {
-        return ({ ...prevState, lastPage: false, releases: null })
+        return ({
+          ...prevState,
+          lastPage: false,
+          releases: undefined
+        })
       })
     }
   }
@@ -55,22 +60,25 @@ class ReleasesList extends Component<ReleasesListProps, ReleasesListState> {
   public getPage = (page: number, endDate: string) => {
     const { appName, client } = this.props
 
-    client.query({
+    client.query<ReleasesData>({
       query: Releases,
       variables: {
         appName,
         page,
         endDate
       }
-    }).then((data: ApolloQueryResult<ReleasesData>) => {
+    }).then((data) => {
       const releases = data.data.releases
 
       this.setState((prevState) => {
+        const prevReleases = prevState.releases
+          ? [...prevState.releases]
+          : []
         return ({
           ...prevState,
           isLoading: false,
           lastPage: releases.length === 0,
-          releases: [...prevState.releases, ...releases]
+          releases: [...prevReleases, ...releases]
         })
       })
     })
@@ -96,12 +104,14 @@ class ReleasesList extends Component<ReleasesListProps, ReleasesListState> {
   public renderReleasesList = () => {
     const { isLoading, releases } = this.state
     const { env } = this.props
-    const filteredReleases = filter((release: Release) => {
-      return env === 'all' || release.environment === env
-    }, releases)
+    const filteredReleases = releases
+      ? filter((release: Release) => {
+        return env === 'all' || release.environment === env
+      }, releases)
+      : []
 
     const releasesList = releases
-      ? mapWithIndex((release: Release, index: number) => {
+      ? mapReleasesWithIndex((release: Release, index: number) => {
         const releaseDate = moment(new Date(release.date))
 
         const lastRelease = index !== 0
@@ -110,6 +120,7 @@ class ReleasesList extends Component<ReleasesListProps, ReleasesListState> {
 
         const addDate =
           index === 0 ||
+          lastRelease !== null &&
           releaseDate.date() !== lastRelease.date()
 
         return (
@@ -164,7 +175,7 @@ class ReleasesList extends Component<ReleasesListProps, ReleasesListState> {
 
 const options = {
   name: 'releases',
-  options: props => ({
+  options: (props: ReleasesListProps) => ({
     variables: {
       appName: props.appName,
     },
@@ -173,5 +184,5 @@ const options = {
 
 export default compose(
   withApollo,
-  graphql<ReleasesData>(Releases, options),
+  graphql<ReleasesListProps, ReleasesData, ReleasesQuery>(Releases, options),
 )(ReleasesList)

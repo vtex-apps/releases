@@ -43,7 +43,7 @@ interface Dependency {
 interface Deployment {
   authors: Author[],
   appName: string,
-  commits: Commit[]
+  commits?: Commit[]
   commitsTotal: number,
   cacheId: string,
   date: string,

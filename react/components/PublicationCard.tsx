@@ -9,7 +9,7 @@ interface PublicationCardProps {
   publication: Publication
 }
 
-const mapWithIndex = addIndex(map)
+const mapAuthorWithIndex = addIndex<Author>(map)
 
 class PublicationCard extends Component<PublicationCardProps> {
   constructor(props: any) {
@@ -18,11 +18,10 @@ class PublicationCard extends Component<PublicationCardProps> {
 
   public render() {
     const { publication } = this.props
-    const authors = mapWithIndex((author: Author, index: number) => {
-      // TODO: tooltip for name
+    const authors = mapAuthorWithIndex((author: Author, index: number) => {
       return (
         <div key={author.username + index} className="pl2">
-          <img className="br-pill" src={author.gravatarURL} /> 
+          <img className="br-pill" src={author.gravatarURL} />
         </div>
       )
     }, publication.authors)
@@ -40,7 +39,7 @@ class PublicationCard extends Component<PublicationCardProps> {
               </Badge>
             </div>
             <div className="pl2">
-              <Badge bgColor={`${ publication.environment === 'beta' ? '#727273' : '#6A3C9B' }`} color={"#fff"}>
+              <Badge bgColor={`${publication.environment === 'beta' ? '#727273' : '#6A3C9B'}`} color={"#fff"}>
                 <span className="f5">{publication.environment}</span>
               </Badge>
             </div>
@@ -52,7 +51,7 @@ class PublicationCard extends Component<PublicationCardProps> {
             <div className="pl3">
               <Badge>
                 <div className="flex flex-row items-center">
-                <RefreshIcon /><span className="pl2 f5">From {publication.versionFrom}</span>
+                  <RefreshIcon /><span className="pl2 f5">From {publication.versionFrom}</span>
                 </div>
               </Badge>
             </div>

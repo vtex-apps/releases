@@ -33,7 +33,7 @@ class ReleaseNoteCard extends Component<ReleaseNoteCardProps> {
           </div>
         </div>
         <div className="w-100 br3 br--bottom">
-          <div className="near-black" dangerouslySetInnerHTML={{__html: markdownDescription}}></div>
+          <div className="near-black" dangerouslySetInnerHTML={{ __html: markdownDescription }}></div>
         </div>
       </div>
     )

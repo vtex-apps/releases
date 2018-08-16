@@ -7,17 +7,17 @@ interface SkeletonPieceProps {
 const DEFAULT_WIDTH = 100
 
 class SkeletonPiece extends Component<SkeletonPieceProps> {
-  
+
   public render() {
     const width = this.props.width ? this.props.width : DEFAULT_WIDTH
 
-    return(
+    return (
       <div className={`pa5 bg-light-gray w-${width} relative overflow-hidden self-end mb3`}>
         <div className={`shimmer`} />
       </div>
     )
   }
-  
+
 }
 
 export default SkeletonPiece
