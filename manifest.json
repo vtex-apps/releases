@@ -1,0 +1,21 @@
+{
+  "name": "releases",
+  "vendor": "vtex",
+  "version": "0.1.0",
+  "title": "Releases",
+  "description": "Notification central for apps release notes",
+  "mustUpdateAt": "2019-08-02",
+  "categories": [],
+  "registries": [
+    "smartcheckout"
+  ],
+  "settingsSchema": {},
+  "dependencies": {
+    "vtex.releases-graphql": "0.x",
+    "vtex.styleguide": "5.x"
+  },
+  "builders": {
+    "pages": "0.x",
+    "react": "2.x"
+  }
+}
