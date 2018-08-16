@@ -179,6 +179,7 @@ const options = {
     variables: {
       appName: props.appName,
     },
+    ssr: false
   }),
 }
 
