@@ -43,8 +43,16 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     }
   }
 
-  public componentDidUpdate(prevProps: ReleasesListProps, _: ReleasesListState) {
-    const { appName } = this.props
+  public componentDidUpdate(prevProps: WithApolloClient<ReleasesData> & ReleasesListProps, prevState: ReleasesListState) {
+    const { appName, releases: { releases: curReleases } } = this.props
+    const { releases: prevReleasesState } = prevState
+    const { releases } = this.state
+
+    if (!prevReleasesState && !releases && curReleases) {
+      this.setState((prevState) => {
+        return ({ ...prevState, releases: curReleases })
+      })
+    }
 
     if (prevProps.appName !== appName) {
       this.setState((prevState) => {
@@ -162,14 +170,11 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     const { releases: { loading } } = this.props
     const { releases } = this.state
 
-    if (!releases && !loading) {
-      this.setState((prevState) => {
-        return ({ ...prevState, releases: this.props.releases.releases })
-      })
-      return (this.renderLoading())
-    }
-
-    return (loading ? this.renderLoading() : this.renderReleasesList())
+    return (
+      loading || releases === undefined
+        ? this.renderLoading()
+        : this.renderReleasesList()
+    )
   }
 }
 
