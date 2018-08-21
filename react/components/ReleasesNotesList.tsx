@@ -78,13 +78,11 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
           noteDate.date() !== lastNote.date()
 
         return (
-          <div key={note.cacheId} className="flex flex-row w-100 pl9 pt8 justify-center">
-            <div className="flex flex-column h-100 w5 mr7 pr7">
-              <ReleaseTime
-                canAddDate={addDate}
-                releaseDate={noteDate}
-              />
-            </div>
+          <div key={note.cacheId} className="flex flex-row w-100 justify-center mb8">
+            <ReleaseTime
+              canAddDate={addDate}
+              releaseDate={noteDate}
+            />
             <ReleaseNoteCard note={note} />
           </div>
         )
@@ -93,7 +91,7 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
 
     return (
       <div
-        className="releases-content w-100 flex flex-row flex-wrap items-center bg-light-silver pv4 overflow-y-scroll overflow-x-hidden"
+        className="releases-content w-100 ph5 pv4 overflow-x-hidden"
         onScroll={this.onScroll}
       >
         {notesList}
@@ -138,7 +136,7 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
 
   private renderLoading = () => {
     return (
-      <div className="w-100 flex justify-center bg-light-silver pt4">
+      <div className="w-100 flex justify-center pt4">
         <Spinner />
       </div>
     )
