@@ -14,6 +14,10 @@ const mapAuthorWithIndex = addIndex<Author>(map)
 class PublicationCard extends Component<PublicationCardProps> {
   public render() {
     const { publication } = this.props
+    const isBeta = publication.environment === 'beta'
+    const badgeBgColor = isBeta ? 'bg-white ba b--rebel-pink' : 'bg-rebel-pink'
+    const badgeColor = isBeta ? 'rebel-pink' : 'white'
+
     const authors = mapAuthorWithIndex((author: Author, index: number) => {
       return (
         <div key={author.username + index} className="pl2">
@@ -23,40 +27,28 @@ class PublicationCard extends Component<PublicationCardProps> {
     }, publication.authors)
 
     return (
-      <div className="flex flex-column w-50-ns mw7">
-        <div className="flex flex-row justify-between w-100 bg-white pv3 ph5 br2 br--top">
-          <div className="flex align-start">
-            <span className={'f3 fw5 elite-purple'}>{publication.appName}</span>
-          </div>
-          <div className="flex align-end">
-            <div className="pr2">
-              <Badge>
-                <span className="f5">{publication.version}</span>
-              </Badge>
-            </div>
-            <div className="pl2">
-              <Badge bgColor={`${publication.environment === 'beta' ? '#727273' : '#6A3C9B'}`} color={'#fff'}>
-                <span className="f5">{publication.environment}</span>
-              </Badge>
-            </div>
+      <div className="w-75 b--silver ba br3 ph7 pv6">
+        <div className="w-100 flex flex-row justify-between">
+          <span className="fw4 f3 near-black">
+            {publication.appName}
+          </span>
+          <div className="">
+            <Badge className={`${badgeBgColor} ${badgeColor}`}>
+              {publication.environment}
+            </Badge>
+            <Badge className={"ml3 near-black ba b--near-black"}>
+              {publication.version}
+            </Badge>
           </div>
         </div>
-        <div className="h3 br2 br--bottom bg-elite-purple ph3">
-          <div className="h-100 flex items-center">
-            {authors}
-            <div className="pl3">
-              <Badge>
-                <div className="flex flex-row items-center">
-                  <RefreshIcon /><span className="pl2 f5">From {publication.versionFrom}</span>
-                </div>
-              </Badge>
+        <div className="w-100 mt4">
+          <div className="w-100 flex flex-row justify-between">
+            <div className="flex flex-row">
+              {authors}
             </div>
-            <div className="pl3">
-              <Badge>
-                <div className="flex flex-row items-center">
-                  <UserIcon /><span className="pl2 f5">{publication.authors ? publication.authors[0].username.split('@')[0] : ''}</span>
-                </div>
-              </Badge>
+            <div className="flex flex-row items-center">
+              <RefreshIcon />
+              <span className="pl3 f5 near-black">From {publication.version}</span>
             </div>
           </div>
         </div>

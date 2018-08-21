@@ -1,10 +1,11 @@
 import { addIndex, map } from 'ramda'
 import React, { Component } from 'react'
 import { withApollo, WithApolloClient } from 'react-apollo'
-import { Badge, IconCaretRight, Spinner } from 'vtex.styleguide'
+import { Button, Spinner } from 'vtex.styleguide'
 
 import GithubIcon from '../icons/GithubIcon'
 import ReleaseDetails from '../queries/ReleaseDetails.graphql'
+import Badge from './Badge'
 
 interface DeploymentCardProps {
   deployment: Deployment
@@ -37,6 +38,11 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
 
   public render() {
     const { deployment, isLoading, isOpen } = this.state
+    const isBeta = deployment.environment === 'beta'
+    const badgeBgColor = isBeta ? 'bg-white ba b--rebel-pink' : 'bg-rebel-pink'
+    const badgeColor = isBeta ? 'rebel-pink' : 'white'
+    const commitText = deployment.commitsTotal === 0 ? "No new commits" : `${deployment.commitsTotal} commit${deployment.commitsTotal > 1 ? 's' : ''}`
+    
     const authors = mapAuthorWithIndex((author: Author, index: number) => {
       return (
         <div key={author.username + index} className="pl2">
@@ -46,54 +52,36 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
     }, deployment.authors)
 
     return (
-      <div className="flex flex-column w-50-ns mw7">
-        <div className="flex flex-row justify-between w-100 bg-white pv3 ph5 br2 br--top">
-          <div className="flex align-start">
-            <span className={'f3 fw5 blue'}>{deployment.appName}</span>
-          </div>
-          <div className="flex align-end">
-            <div className="pr2">
-              <Badge>
-                <span className="f5">{deployment.version}</span>
-              </Badge>
-            </div>
-            <div className="pl2">
-              <Badge bgColor={`${deployment.environment === 'beta' ? '#727273' : '#368df7'}`} color={'#fff'}>
-                <span className="f5">{deployment.environment}</span>
-              </Badge>
-            </div>
+      <div className="w-75 b--silver ba br3 ph7 pv6">
+        <div className="w-100 flex flex-row justify-between">
+          <span className="fw4 f3 near-black">
+            {deployment.appName}
+          </span>
+          <div className="">
+            <Badge className={`${badgeBgColor} ${badgeColor}`}>
+              {deployment.environment}
+            </Badge>
+            <Badge className={"ml3 near-black ba b--near-black"}>
+              {deployment.version}
+            </Badge>
           </div>
         </div>
-        <div
-          className="flex flex-column justify-center br2 br--bottom bg-light-blue ph3 pointer"
-          onClick={this.onClickCard}
-        >
-          <div className="flex flex-row justify-between items-center h3">
-            <div className="h-100 flex items-center align-start">
+        <div className="w-100 mt4">
+          <div className="w-100 flex flex-row justify-between">
+            <div className="flex flex-row">
               {authors}
-              <div className="pl3">
-                <Badge>
-                  <div className="flex flex-row items-center">
-                    <GithubIcon /><span className="pl3 f5">{deployment.commitsTotal === 0 ? 'No new commits' : deployment.commitsTotal}</span>
-                  </div>
-                </Badge>
-              </div>
             </div>
-            <div className="h-100 align-end flex items-center pr3">
-              <div
-                style={{
-                  animationDuration: '0.333s',
-                  transform: `rotate(${isOpen ? '90deg' : '0deg'})`,
-                  transition: 'transform 0.333s ease'
-                }}
-              >
-                <IconCaretRight />
-              </div>
+            <div className="flex flex-row items-center">
+              <GithubIcon />
+              <span className="pl3 f5 near-black">{commitText}</span>
+              <Button variation='tertiary' onClick={this.onExpandClick}> 
+                EXPAND
+              </Button>
             </div>
           </div>
-          {isOpen
+          { isOpen 
             ? (isLoading ? this.renderLoading() : this.renderDetails())
-            : null
+            : null 
           }
         </div>
       </div>
@@ -127,8 +115,8 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
     })
   }
 
-  private onClickCard = () => {
-    this.setState((prevState) => {
+  private onExpandClick = () => {
+    this.setState((prevState) => { 
       const isOpen = !prevState.isOpen
       const isLoading = isOpen
 
@@ -170,7 +158,7 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
       : []
 
     return (
-      <div className="w-100 ph3 pt2 pb4 flex flex-column">
+      <div className="w-100 ph3 pt2 pb4 flex flex-column near-black">
         <div className="w-100">
           <span className="f5 underline">Commits</span>
           <div className="w-100 pb3">

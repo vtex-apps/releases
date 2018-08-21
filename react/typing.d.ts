@@ -12,9 +12,11 @@ declare module 'vtex.styleguide' {
   const Button: ReactElement
   const Dropdown: ReactElement
   const IconCaretRight: ReactElement
+  const Tab: ReactElement
+  const Tabs: ReactElement
   const Spinner: ReactElement
 
-  export { Badge, Button, Dropdown, IconCaretRight, Spinner }
+  export { Badge, Button, Dropdown, IconCaretRight, Tab, Tabs, Spinner }
 }
 
 declare module 'render' {

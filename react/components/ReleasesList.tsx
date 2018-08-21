@@ -155,7 +155,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
 
     return (
       <div
-        className="releases-content w-100 flex flex-row flex-wrap items-center bg-light-silver pv4 overflow-y-scroll overflow-x-hidden"
+        className="releases-content w-100 ph5 overflow-y-scroll overflow-x-hidden"
         onScroll={this.onScroll}
       >
         {releasesList}
@@ -166,7 +166,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
 
   private renderLoading = () => {
     return (
-      <div className="w-100 flex justify-center bg-light-silver pt4">
+      <div className="w-100 flex justify-center pt4">
         <Spinner />
       </div>
     )
