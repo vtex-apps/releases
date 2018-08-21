@@ -75,7 +75,7 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
               <GithubIcon />
               <span className="pl3 f5 near-black">{commitText}</span>
               <Button variation='tertiary' onClick={this.onExpandClick}> 
-                EXPAND
+                { isOpen ? 'COLLAPSE'  : 'EXPAND'}
               </Button>
             </div>
           </div>
