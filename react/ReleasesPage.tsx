@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 
-import ReleasesList from './components/ReleasesList'
-import ReleasesNotesList from './components/ReleasesNotesList'
-import ReleasesSidebar from './components/ReleasesSidebar'
+import ReleasesContent from './components/ReleasesContent'
+
+import VtexIcon from './icons/VtexIcon'
+import LogoutIcon from './icons/LogoutIcon'
 
 import './releases.global.css'
 
@@ -27,20 +28,17 @@ class ReleasesPage extends Component<{}, ReleasesPageState> {
     const { app, contentType, env } = this.state
 
     return (
-      <div className="w-100 h-100-ns flex-ns flex-row-ns">
-        <ReleasesSidebar
-          appName={app}
-          contentType={contentType}
-          env={env}
-          handleAppChange={this.handleAppChange}
-          handleContentChange={this.handleContentChange}
-          handleEnvChange={this.handleEnvChange}
-        />
-        {
-          contentType === 'releases'
-            ? <ReleasesList env={env} appName={app} />
-            : <ReleasesNotesList />
-        }
+      <div className="w-100 h-100 bg-light-silver overflow-hidden">
+        <div className="w-100 flex flex-row justify-between pa7">
+          <VtexIcon />
+          <div className="flex flex-row items-center justify-center">
+            <p>lcfpadilha@gmail.com</p>
+            <div className="pl3 pointer">
+              <LogoutIcon />
+            </div>
+          </div>
+        </div>
+        <ReleasesContent />
       </div>
     )
   }
