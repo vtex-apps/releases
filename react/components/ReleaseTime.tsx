@@ -9,11 +9,15 @@ interface ReleaseTimeProps {
   releaseDate: Moment
 }
 
+const MONTHS = [ 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC' ]
+
 class ReleaseTime extends Component<ReleaseTimeProps> {
   public renderDate = (date: Moment) => {
+    console.log(date.month)
     return (
-      <div className="pb3 flex self-end">
-        <span className="f2 fw5 blue">{date.format('DD/MM/YYYY')}</span>
+      <div className="flex flex-column mr8 items-center">
+        <span className="f2 fw3 rebel-pink">{date.date()}</span>
+        <span className="f3 fw5 black">{MONTHS[date.month()]}</span>
       </div>
     )
   }
@@ -31,12 +35,14 @@ class ReleaseTime extends Component<ReleaseTimeProps> {
     const { canAddDate, releaseDate } = this.props
     return (
       <NoSSR onSSR={this.renderSkeleton()}>
-        {canAddDate ?
-          this.renderDate(releaseDate)
-          : null
-        }
-        <div className="h-100 flex self-end">
-          <span className="f2 fw2 mid-gray">{releaseDate.format('HH:mm')}</span>
+        <div className="flex flex-row justify-end w-25 pr6">
+          {canAddDate ?
+            this.renderDate(releaseDate)
+            : null
+          }
+          <div className="h-100 flex self-end pt8">
+            <span className="f3 fw5 silver">{releaseDate.format('HH:mm')}</span>
+          </div>
         </div>
       </NoSSR>
     )

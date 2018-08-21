@@ -138,13 +138,11 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
           releaseDate.date() !== lastRelease.date()
 
         return (
-          <div key={release.cacheId} className="flex flex-row w-100 pl9 pt8 justify-center">
-            <div className="flex flex-column h-100 w5 mr7 pr7">
-              <ReleaseTime
-                canAddDate={addDate}
-                releaseDate={releaseDate}
-              />
-            </div>
+          <div key={release.cacheId} className="flex flex-row w-100 justify-center mb8">
+            <ReleaseTime
+              canAddDate={addDate}
+              releaseDate={releaseDate}
+            />
             {release.type === 'deployment'
               ? <DeploymentCard deployment={release as Deployment} />
               : <PublicationCard publication={release as Publication} />}
@@ -155,7 +153,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
 
     return (
       <div
-        className="releases-content w-100 ph5 overflow-y-scroll overflow-x-hidden"
+        className="releases-content w-100 ph5 pv4 overflow-y-scroll overflow-x-hidden"
         onScroll={this.onScroll}
       >
         {releasesList}
