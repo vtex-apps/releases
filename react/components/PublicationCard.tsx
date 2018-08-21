@@ -1,9 +1,8 @@
 import { addIndex, map } from 'ramda'
 import React, { Component } from 'react'
-import { Badge } from 'vtex.styleguide'
+import Badge from './Badge'
 
 import RefreshIcon from '../icons/RefreshIcon'
-import UserIcon from '../icons/UserIcon'
 
 interface PublicationCardProps {
   publication: Publication
