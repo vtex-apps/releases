@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { NoSSR } from 'render'
-import { Moment } from 'moment'
+import moment, { Moment } from 'moment'
 
 import SkeletonPiece from './SkeletonPiece'
 
@@ -13,11 +13,14 @@ const MONTHS = [ 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 
 
 class ReleaseTime extends Component<ReleaseTimeProps> {
   public renderDate = (date: Moment) => {
-    console.log(date.month)
+    const curDate = moment(Date.now())
+    const curYear = curDate.year()
+    
     return (
       <div className="flex flex-column mr8 items-center">
         <span className="f2 fw3 rebel-pink">{date.date()}</span>
         <span className="f3 fw5 black">{MONTHS[date.month()]}</span>
+        {curYear !== date.year() ? <span className="f3 fw5 light-gray">{date.year()}</span> : null}
       </div>
     )
   }
