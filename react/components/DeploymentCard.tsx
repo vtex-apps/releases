@@ -1,5 +1,6 @@
 import { addIndex, map } from 'ramda'
 import React, { Component } from 'react'
+import { FormattedMessage } from 'react-intl'
 import { withApollo, WithApolloClient } from 'react-apollo'
 import { Button, Spinner } from 'vtex.styleguide'
 
@@ -41,7 +42,9 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
     const isBeta = deployment.environment === 'beta'
     const badgeBgColor = isBeta ? 'bg-white ba b--rebel-pink' : 'bg-rebel-pink'
     const badgeColor = isBeta ? 'rebel-pink' : 'white'
-    const commitText = deployment.commitsTotal === 0 ? "No new commits" : `${deployment.commitsTotal} commit${deployment.commitsTotal > 1 ? 's' : ''}`
+    const commitText = deployment.commitsTotal === 0
+      ? <FormattedMessage id="releases.card.nocommits" />
+      : `${deployment.commitsTotal} commit${deployment.commitsTotal > 1 ? 's' : ''}`
 
     const authors = mapAuthorWithIndex((author: Author, index: number) => {
       return (
@@ -75,14 +78,17 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
               <GithubIcon />
               <span className="dn-s db-ns pl3 f5 near-black">{commitText}</span>
               <span className="dn-ns pl3 f5 near-black">{deployment.commitsTotal}</span>
-              <Button variation='tertiary' onClick={this.onExpandClick}> 
-                { isOpen ? 'COLLAPSE'  : 'EXPAND'}
+              <Button variation='tertiary' onClick={this.onExpandClick}>
+                {isOpen
+                  ? <FormattedMessage id="releases.card.button.collapse" />
+                  : <FormattedMessage id="releases.card.button.expand" />
+                }
               </Button>
             </div>
           </div>
-          { isOpen 
+          {isOpen
             ? (isLoading ? this.renderLoading() : this.renderDetails())
-            : null 
+            : null
           }
         </div>
       </div>
@@ -170,7 +176,9 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
         </div>
         <div className="w-100">
           <div className="pb3">
-            <span className="f5 underline">Dependencies</span>
+            <span className="f5 underline">
+              <FormattedMessage id="releases.card.dependencies" />
+            </span>
           </div>
           <div className="w-100">
             {dependencies}

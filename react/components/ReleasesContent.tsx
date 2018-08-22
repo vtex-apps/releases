@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Tab, Tabs } from 'vtex.styleguide'
+import { FormattedMessage } from 'react-intl'
 
 import Overview from './Overview'
 import ReleasesList from './ReleasesList'
@@ -19,7 +20,7 @@ class ReleasesContent extends Component<{}, ReleasesContentState> {
       contentType: 'releases'
     }
   }
-  
+
   public handleAppChange = (event: any) => {
     const appName = event.target.value as string
 
@@ -38,18 +39,18 @@ class ReleasesContent extends Component<{}, ReleasesContentState> {
   public selectContent = () => {
     const { appName, contentType } = this.state
 
-    switch(contentType) {
+    switch (contentType) {
       case 'overview':
         return (
-          <Overview 
-            appName={appName} 
+          <Overview
+            appName={appName}
             handleAppChange={this.handleAppChange}
           />
         )
       case 'releases':
         return (
-          <ReleasesList 
-            appName={appName} 
+          <ReleasesList
+            appName={appName}
             handleAppChange={this.handleAppChange}
           />
         )
@@ -69,17 +70,35 @@ class ReleasesContent extends Component<{}, ReleasesContentState> {
           <div className="w-100 w-75-l mw9 flex flex-column">
             <div className="ph5">
               <div className="mb7">
-                <span className="near-black f1 fw6">Latest Releases</span>
+                <span className="near-black f1 fw6">
+                  <FormattedMessage id="releases.content.title" />
+                </span>
               </div>
               <Tabs>
-                <Tab label="Overview" active={contentType === 'overview'} onClick={() => this.handleContentChange('overview')} />
-                <Tab label="Releases" active={contentType === 'releases'} onClick={() => this.handleContentChange('releases')} />
-                <Tab label="Releases Notes" active={contentType === 'notes'} onClick={() => this.handleContentChange('notes')}/>
-                <Tab label="My apps" active={contentType === 'apps'} onClick={() => this.handleContentChange('apps')}/>
+                <Tab
+                  label={<FormattedMessage id="releases.content.overview" />}
+                  active={contentType === 'overview'}
+                  onClick={() => this.handleContentChange('overview')}
+                />
+                <Tab
+                  label={<FormattedMessage id="releases.content.releases" />}
+                  active={contentType === 'releases'}
+                  onClick={() => this.handleContentChange('releases')}
+                />
+                <Tab
+                  label={<FormattedMessage id="releases.content.notes" />}
+                  active={contentType === 'notes'}
+                  onClick={() => this.handleContentChange('notes')}
+                />
+                <Tab
+                  label={<FormattedMessage id="releases.content.apps" />}
+                  active={contentType === 'apps'}
+                  onClick={() => this.handleContentChange('apps')}
+                />
               </Tabs>
             </div>
             <div className="w-100 flex-auto bg-white br2 flex flex-column">
-              { this.selectContent() }
+              {this.selectContent()}
             </div>
           </div>
         </div>

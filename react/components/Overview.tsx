@@ -1,3 +1,4 @@
+import { FormattedMessage } from 'react-intl'
 import { addIndex, filter, map } from 'ramda'
 import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
@@ -20,7 +21,7 @@ interface OverviewProps {
   statistic: any
 }
 
-const STATISTIC_NAMES = [ 'LAST HOUR', 'LAST 3 HOURS', 'LAST 7 DAYS', 'LAST 30 DAYS' ]
+const STATISTIC_NAMES = ['hour', '3hours', '7days', '30days']
 const mapWithIndex = addIndex<number, JSX.Element>(map)
 
 class Overview extends Component<OverviewProps, OverviewState> {
@@ -64,13 +65,15 @@ class Overview extends Component<OverviewProps, OverviewState> {
       last30Days += statistic.preReleaseLast30Days
     }
 
-    const statisticNumbers = [ lastHour, last3Hours, last7Days, last30Days ]
+    const statisticNumbers = [lastHour, last3Hours, last7Days, last30Days]
     const statisticElements = mapWithIndex((stat: number, index: number) => {
       const name = STATISTIC_NAMES[index]
       return (
         <div key={name} className="w-50 pb6 pa0-ns flex flex-column">
           <div className="w-100 flex justify-center">
-            <span className="silver f5 fw4 tracked">{name}</span>
+            <span className="silver f5 fw4 tracked">
+              <FormattedMessage id={`releases.overview.${name}`} />
+            </span>
           </div>
           <div className="flex justify-center">
             <span className="f2 fw5">{stat}</span>
@@ -106,7 +109,7 @@ class Overview extends Component<OverviewProps, OverviewState> {
           handleAppChange={handleAppChange}
           handleEnvChange={this.handleEnvChange}
         />
-        { loading ? this.renderLoading() : this.renderStatistics()}
+        {loading ? this.renderLoading() : this.renderStatistics()}
       </div>
     )
   }

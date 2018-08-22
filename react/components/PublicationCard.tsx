@@ -1,5 +1,6 @@
 import { addIndex, map } from 'ramda'
 import React, { Component } from 'react'
+import { FormattedMessage } from 'react-intl'
 import Badge from './Badge'
 
 import RefreshIcon from '../icons/RefreshIcon'
@@ -47,7 +48,9 @@ class PublicationCard extends Component<PublicationCardProps> {
             </div>
             <div className="flex flex-row items-center">
               <RefreshIcon />
-              <span className="pl3 f5 near-black">From {publication.version}</span>
+              <span className="pl3 f5 near-black">
+                <FormattedMessage id="releases.card.from" /> {publication.version}
+              </span>
             </div>
           </div>
         </div>

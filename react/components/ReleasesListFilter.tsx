@@ -1,6 +1,7 @@
 import { concat, map } from 'ramda'
 import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
+import { FormattedMessage } from 'react-intl'
 import { Checkbox, Dropdown } from 'vtex.styleguide'
 
 import Projects from '../queries/Projects.graphql'
@@ -14,6 +15,11 @@ interface FilterProps {
   envs: Environment[]
   handleAppChange: (event: any) => void
   handleEnvChange: (event: any) => void
+}
+
+interface ProjectListOptions {
+  label: JSX.Element | string
+  value: string
 }
 
 class ReleasesListFilter extends Component<ProjectsData & FilterProps> {
@@ -30,7 +36,8 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps> {
       projects: { projects } } = this.props
 
     const projectList = projects ? projects : []
-    const projectOptions = concat([{ value: 'all', label: 'All Projects' }],
+    const projectOptions = concat<ProjectListOptions>(
+      [{ value: 'all', label: <FormattedMessage id="releases.filter.allProjects" /> }],
       map((project: Project) => {
         return { value: project.name, label: project.name }
       }, projectList)

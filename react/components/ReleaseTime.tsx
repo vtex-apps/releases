@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import { FormattedMessage } from 'react-intl'
 import { NoSSR } from 'render'
 import moment, { Moment } from 'moment'
 
@@ -9,8 +10,6 @@ interface ReleaseTimeProps {
   releaseDate: Moment
 }
 
-const MONTHS = [ 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC' ]
-
 class ReleaseTime extends Component<ReleaseTimeProps> {
   public renderDate = (date: Moment) => {
     const curDate = moment(Date.now())
@@ -19,7 +18,9 @@ class ReleaseTime extends Component<ReleaseTimeProps> {
     return (
       <div className="z-1 bg-white flex flex-column pb5 pa0-ns mr8-ns items-center">
         <span className="f2 fw3 rebel-pink">{date.date()}</span>
-        <span className="f4 f3-ns fw5 black">{MONTHS[date.month()]}</span>
+        <span className="f4 f3-ns fw5 black">
+          <FormattedMessage id={`releases.date.months.${date.month()}`} />
+        </span>
         {curYear !== date.year() ? <span className="f3 fw5 light-gray">{date.year()}</span> : null}
       </div>
     )
