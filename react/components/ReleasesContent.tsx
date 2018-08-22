@@ -5,6 +5,7 @@ import ReleasesList from './ReleasesList'
 import ReleasesNotesList from './ReleasesNotesList'
 
 interface ReleasesContentState {
+  appName: string
   contentType: string
 }
 
@@ -13,8 +14,20 @@ class ReleasesContent extends Component<{}, ReleasesContentState> {
     super(props)
 
     this.state = {
+      appName: 'all',
       contentType: 'releases'
     }
+  }
+  
+  public handleAppChange = (event: any) => {
+    const appName = event.target.value as string
+
+    this.setState((prevState) => {
+      return ({
+        ...prevState,
+        appName
+      })
+    })
   }
 
   public handleContentChange = (contentType: string) => {
@@ -22,11 +35,17 @@ class ReleasesContent extends Component<{}, ReleasesContentState> {
   }
 
   public selectContent = () => {
-    const { contentType } = this.state
+    const { appName, contentType } = this.state
 
     switch(contentType) {
       case 'releases':
-        return <ReleasesList appName={'all'} env={'all'}/>
+        return (
+          <ReleasesList 
+            appName={appName} 
+            env={'all'}
+            handleAppChange={this.handleAppChange}
+          />
+        )
       case 'notes':
         return <ReleasesNotesList />
       default:

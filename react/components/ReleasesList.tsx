@@ -4,10 +4,12 @@ import React, { Component } from 'react'
 import { compose, graphql, withApollo, WithApolloClient } from 'react-apollo'
 import { Spinner } from 'vtex.styleguide'
 
-import Releases from '../queries/Releases.graphql'
 import DeploymentCard from './DeploymentCard'
 import PublicationCard from './PublicationCard'
+import ReleasesListFilter from './ReleasesListFilter'
 import ReleaseTime from './ReleaseTime'
+
+import Releases from '../queries/Releases.graphql'
 
 interface ReleasesData {
   releases: any
@@ -20,6 +22,7 @@ interface ReleasesQuery {
 interface ReleasesListProps {
   appName: string
   env: Environment
+  handleAppChange: (event: any) => void
 }
 
 interface ReleasesListState {
@@ -58,7 +61,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
   }
 
   public render() {
-    const { releases: { loading } } = this.props
+    const { appName, handleAppChange, releases: { loading } } = this.props
     const { releases } = this.state
 
     if (!releases && !loading) {
@@ -68,7 +71,15 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
       return (this.renderLoading())
     }
 
-    return (loading ? this.renderLoading() : this.renderReleasesList())
+    return (
+      <div className="w-100 ph5 pv7">
+        <ReleasesListFilter 
+          appName={appName}
+          handleAppChange={handleAppChange}
+        />
+        { loading ? this.renderLoading() : this.renderReleasesList() }
+      </div>
+    )
   }
 
   private getPage = (page: number, endDate: string) => {
@@ -153,7 +164,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
 
     return (
       <div
-        className="releases-content w-100 ph5 pv4 overflow-y-scroll overflow-x-hidden"
+          className="releases-content w-100 pv4 overflow-y-scroll"
         onScroll={this.onScroll}
       >
         {releasesList}

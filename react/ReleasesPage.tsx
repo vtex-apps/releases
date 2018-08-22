@@ -1,15 +1,12 @@
 import React, { Component } from 'react'
 
 import ReleasesContent from './components/ReleasesContent'
-
-import VtexIcon from './icons/VtexIcon'
 import LogoutIcon from './icons/LogoutIcon'
+import VtexIcon from './icons/VtexIcon'
 
 import './releases.global.css'
 
 interface ReleasesPageState {
-  app: string
-  contentType: ContentType
   env: Environment
 }
 
@@ -18,14 +15,12 @@ class ReleasesPage extends Component<{}, ReleasesPageState> {
     super(props)
 
     this.state = {
-      app: 'all',
-      contentType: 'releases',
       env: 'all'
     }
   }
 
   public render() {
-    const { app, contentType, env } = this.state
+    const { env } = this.state
 
     return (
       <div className="w-100 h-100 bg-light-silver overflow-hidden">
@@ -43,17 +38,6 @@ class ReleasesPage extends Component<{}, ReleasesPageState> {
     )
   }
 
-  private handleAppChange = (event: any) => {
-    const app = event.target.value as string
-
-    this.setState((prevState) => {
-      return ({
-        ...prevState,
-        app
-      })
-    })
-  }
-
   private handleEnvChange = (event: any) => {
     const env = event.target.value as Environment
 
@@ -61,17 +45,6 @@ class ReleasesPage extends Component<{}, ReleasesPageState> {
       return ({
         ...prevState,
         env
-      })
-    })
-  }
-
-  private handleContentChange = (event: any) => {
-    const contentType = event.currentTarget.id as ContentType
-
-    this.setState((prevState) => {
-      return ({
-        ...prevState,
-        contentType
       })
     })
   }

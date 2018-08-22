@@ -10,13 +10,14 @@ declare module 'vtex.styleguide' {
 
   const Badge: ReactElement
   const Button: ReactElement
+  const Checkbox: ReactElement
   const Dropdown: ReactElement
   const IconCaretRight: ReactElement
   const Tab: ReactElement
   const Tabs: ReactElement
   const Spinner: ReactElement
 
-  export { Badge, Button, Dropdown, IconCaretRight, Tab, Tabs, Spinner }
+  export { Badge, Button, Checkbox, Dropdown, IconCaretRight, Tab, Tabs, Spinner }
 }
 
 declare module 'render' {
