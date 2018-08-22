@@ -6,22 +6,9 @@ import VtexIcon from './icons/VtexIcon'
 
 import './releases.global.css'
 
-interface ReleasesPageState {
-  env: Environment
-}
 
-class ReleasesPage extends Component<{}, ReleasesPageState> {
-  constructor(props: any) {
-    super(props)
-
-    this.state = {
-      env: 'all'
-    }
-  }
-
+class ReleasesPage extends Component {
   public render() {
-    const { env } = this.state
-
     return (
       <div className="w-100 h-100 bg-light-silver overflow-hidden">
         <div className="w-100 flex flex-row justify-between pa7">
