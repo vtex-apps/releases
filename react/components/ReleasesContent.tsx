@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Tab, Tabs } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
 
+import NavigationTab from './NavigationTab'
 import Overview from './Overview'
 import ReleasesList from './ReleasesList'
 import ReleasesNotesList from './ReleasesNotesList'
@@ -74,28 +74,10 @@ class ReleasesContent extends Component<{}, ReleasesContentState> {
                   <FormattedMessage id="releases.content.title" />
                 </span>
               </div>
-              <Tabs>
-                <Tab
-                  label={<FormattedMessage id="releases.content.overview" />}
-                  active={contentType === 'overview'}
-                  onClick={() => this.handleContentChange('overview')}
-                />
-                <Tab
-                  label={<FormattedMessage id="releases.content.releases" />}
-                  active={contentType === 'releases'}
-                  onClick={() => this.handleContentChange('releases')}
-                />
-                <Tab
-                  label={<FormattedMessage id="releases.content.notes" />}
-                  active={contentType === 'notes'}
-                  onClick={() => this.handleContentChange('notes')}
-                />
-                <Tab
-                  label={<FormattedMessage id="releases.content.apps" />}
-                  active={contentType === 'apps'}
-                  onClick={() => this.handleContentChange('apps')}
-                />
-              </Tabs>
+              <NavigationTab 
+                contentType={contentType}
+                handleContentChange={this.handleContentChange}
+              />
             </div>
             <div className="w-100 flex-auto bg-white br2 flex flex-column">
               {this.selectContent()}
