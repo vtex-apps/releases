@@ -47,8 +47,10 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     }
   }
 
-  public componentDidUpdate(prevProps: ReleasesListProps, _: ReleasesListState) {
-    const { appName } = this.props
+  public componentDidUpdate(prevProps: ReleasesListProps, prevState: ReleasesListState) {
+    const { appName, releases: { releases: curReleases } } = this.props
+    const { releases: prevReleasesState } = prevState
+    const { releases } = this.state
 
     if (prevProps.appName !== appName) {
       this.setState((prevState) => {
@@ -59,18 +61,17 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
         })
       })
     }
+
+    if (!prevReleasesState && !releases && curReleases) {
+      this.setState((prevState) => {
+        return ({ ...prevState, releases: curReleases })
+      })
+    }
   }
 
   public render() {
     const { appName, handleAppChange, releases: { loading } } = this.props
     const { envs, releases } = this.state
-
-    if (!releases && !loading) {
-      this.setState((prevState) => {
-        return ({ ...prevState, releases: this.props.releases.releases })
-      })
-      return (this.renderLoading())
-    }
 
     return (
       <div className="w-100 ph5 pv7">
@@ -80,7 +81,11 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
           handleAppChange={handleAppChange}
           handleEnvChange={this.handleEnvChange}
         />
-        { loading ? this.renderLoading() : this.renderReleasesList() }
+        { 
+          loading || releases === undefined 
+            ? this.renderLoading() 
+            : this.renderReleasesList() 
+        }
       </div>
     )
   }
