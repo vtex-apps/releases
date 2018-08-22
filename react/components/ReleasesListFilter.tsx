@@ -11,7 +11,9 @@ interface ProjectsData {
 
 interface FilterProps {
   appName: string
+  envs: Environment[]
   handleAppChange: (event: any) => void
+  handleEnvChange: (event: any) => void
 }
 
 class ReleasesListFilter extends Component<ProjectsData & FilterProps> {
@@ -20,7 +22,13 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps> {
   }
 
   public render() {
-    const { appName, handleAppChange, projects: { projects } } = this.props
+    const {
+      appName,
+      envs,
+      handleAppChange,
+      handleEnvChange,
+      projects: { projects } } = this.props
+
     const projectList = projects ? projects : []
     const projectOptions = concat([{ value: 'all', label: 'All Projects' }],
       map((project: Project) => {
@@ -31,7 +39,7 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps> {
     return (
       <div className="w-100 flex flex-row justify-between pv6">
         <div className="w-25">
-          <Dropdown 
+          <Dropdown
             onChange={handleAppChange}
             options={projectOptions}
             value={appName}
@@ -40,16 +48,22 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps> {
         <div className="flex flex-row">
           <div className="pr4">
             <Checkbox
+              checked={envs.includes('stable')}
               id="stable"
               label="Stable"
               value="stable"
+              name="env-checkbox-group"
+              onChange={handleEnvChange}
             />
           </div>
           <div>
             <Checkbox
+              checked={envs.includes('beta')}
               id="beta"
               label="Beta"
               value="beta"
+              name="env-checkbox-group"
+              onChange={handleEnvChange}
             />
           </div>
         </div>
@@ -59,7 +73,7 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps> {
 }
 
 export default compose(
-  graphql<ProjectsData>(Projects, { 
+  graphql<ProjectsData>(Projects, {
     name: 'projects',
     options: {
       ssr: false

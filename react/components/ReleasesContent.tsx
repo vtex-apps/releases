@@ -42,7 +42,6 @@ class ReleasesContent extends Component<{}, ReleasesContentState> {
         return (
           <ReleasesList 
             appName={appName} 
-            env={'all'}
             handleAppChange={this.handleAppChange}
           />
         )

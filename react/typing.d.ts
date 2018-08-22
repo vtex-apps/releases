@@ -32,7 +32,7 @@ type ReleaseType = 'publication' | 'deployment'
 
 type ContentType = 'releases' | 'notes'
 
-type Environment = 'all' | 'stable' | 'beta'
+type Environment = 'stable' | 'beta'
 
 interface Author {
   gravatarURL: string

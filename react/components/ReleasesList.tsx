@@ -21,14 +21,14 @@ interface ReleasesQuery {
 
 interface ReleasesListProps {
   appName: string
-  env: Environment
   handleAppChange: (event: any) => void
 }
 
 interface ReleasesListState {
-  isLoading: boolean,
-  releases?: Release[],
-  nextPage: number,
+  envs: Environment[]
+  isLoading: boolean
+  releases?: Release[]
+  nextPage: number
   lastPage: boolean
 }
 
@@ -39,6 +39,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     super(props)
 
     this.state = {
+      envs: ['stable', 'beta'],
       isLoading: false,
       lastPage: false,
       nextPage: 2,
@@ -62,7 +63,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
 
   public render() {
     const { appName, handleAppChange, releases: { loading } } = this.props
-    const { releases } = this.state
+    const { envs, releases } = this.state
 
     if (!releases && !loading) {
       this.setState((prevState) => {
@@ -75,11 +76,25 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
       <div className="w-100 ph5 pv7">
         <ReleasesListFilter 
           appName={appName}
+          envs={envs}
           handleAppChange={handleAppChange}
+          handleEnvChange={this.handleEnvChange}
         />
         { loading ? this.renderLoading() : this.renderReleasesList() }
       </div>
     )
+  }
+
+  private handleEnvChange = (event: any) => {
+    const value = event.target.value
+
+    this.setState((prevState) => {
+      const prevEnvs = prevState.envs
+      const newEnvs = prevEnvs.includes(value) 
+        ? filter((env: Environment) => env !== value, prevEnvs)
+        : [ ...prevEnvs, value]
+      return { ...prevState, envs: newEnvs }
+    })
   }
 
   private getPage = (page: number, endDate: string) => {
@@ -127,11 +142,11 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
   }
 
   private renderReleasesList = () => {
-    const { isLoading, releases } = this.state
-    const { env } = this.props
+    const { isLoading, releases, envs } = this.state
+
     const filteredReleases = releases
       ? filter((release: Release) => {
-        return env === 'all' || release.environment === env
+        return envs.includes(release.environment as Environment)
       }, releases)
       : []
 
