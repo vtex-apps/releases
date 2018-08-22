@@ -10,8 +10,8 @@ import './releases.global.css'
 class ReleasesPage extends Component {
   public render() {
     return (
-      <div className="w-100 h-100 bg-light-silver overflow-hidden">
-        <div className="w-100 flex flex-row justify-between pa7">
+      <div className="w-100 h-100 bg-light-silver overflow-hidden flex flex-column">
+        <div className="w-100 flex flex-row flex-none justify-between pa7">
           <VtexIcon />
           <div className="flex flex-row items-center justify-center">
             <p>lcfpadilha@gmail.com</p>

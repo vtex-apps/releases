@@ -74,7 +74,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     const { envs, releases } = this.state
 
     return (
-      <div className="w-100 ph5 pv7">
+      <div className="pt7 flex flex-column">
         <ReleasesListFilter 
           appName={appName}
           envs={envs}
@@ -183,8 +183,8 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
       : null
 
     return (
-      <div
-          className="releases-content w-100 pv4 overflow-y-scroll"
+      <div 
+        className="ph8 pv4 flex-auto overflow-y-scroll"
         onScroll={this.onScroll}
       >
         {releasesList}
@@ -195,7 +195,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
 
   private renderLoading = () => {
     return (
-      <div className="w-100 flex justify-center pt4">
+      <div className="w-100 flex justify-center pv4">
         <Spinner />
       </div>
     )

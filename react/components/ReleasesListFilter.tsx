@@ -37,7 +37,7 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps> {
     )
 
     return (
-      <div className="w-100 flex flex-row justify-between pv6">
+      <div className="flex flex-row flex-none justify-between pv6 ph8">
         <div className="w-25">
           <Dropdown
             onChange={handleAppChange}

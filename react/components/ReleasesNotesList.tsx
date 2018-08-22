@@ -91,7 +91,7 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
 
     return (
       <div
-        className="releases-content w-100 ph5 pv4 overflow-x-hidden"
+        className="w-100 ph8 pt9 overflow-y-scroll"
         onScroll={this.onScroll}
       >
         {notesList}
@@ -136,7 +136,7 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
 
   private renderLoading = () => {
     return (
-      <div className="w-100 flex justify-center pt4">
+      <div className="w-100 flex justify-center pv4">
         <Spinner />
       </div>
     )
