@@ -15,13 +15,13 @@ class ReleaseNoteCard extends Component<ReleaseNoteCardProps> {
 
     return (
       <div className="flex-auto b--silver ba br3 pa5 ph7-ns pv6-ns">
-        <div className="w-100 flex flex-column flex-row-ns justify-between pb4 pb0-ns">
+        <div className="w-100 flex flex-column flex-row-l justify-between pb4 pb0-l">
           <div className="w-75">
             <span className="fw4 f3 near-black">
               {note.appName} - {note.title}
             </span>
           </div>
-          <div className="pt4 pt0-ns">
+          <div className="pt4 pt0-l">
             <Badge className="near-black ba b--near-black">
               <TagIcon /><span className="f5 pl2">{note.version}</span>
             </Badge>

@@ -66,7 +66,7 @@ class ReleasesContent extends Component<{}, ReleasesContentState> {
     return (
       <div className="w-100 h-100 flex-auto">
         <div className="h-100 w-100 flex flex-column items-center">
-          <div className="w-100 w-75-ns mw9 flex flex-column">
+          <div className="w-100 w-75-l mw9 flex flex-column">
             <div className="ph5">
               <div className="mb7">
                 <span className="near-black f1 fw6">Latest Releases</span>
