@@ -78,7 +78,7 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
           noteDate.date() !== lastNote.date()
 
         return (
-          <div key={note.cacheId} className="flex flex-row w-100 justify-center mb8">
+          <div key={note.cacheId} className="timeline relative flex flex-row w-100 justify-center pb8">
             <ReleaseTime
               canAddDate={addDate}
               releaseDate={noteDate}

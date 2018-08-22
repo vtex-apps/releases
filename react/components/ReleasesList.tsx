@@ -169,7 +169,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
           releaseDate.date() !== lastRelease.date()
 
         return (
-          <div key={release.cacheId} className="flex flex-row w-100 justify-center mb8">
+          <div key={release.cacheId} className="timeline relative flex flex-row w-100 justify-center pb8">
             <ReleaseTime
               canAddDate={addDate}
               releaseDate={releaseDate}
