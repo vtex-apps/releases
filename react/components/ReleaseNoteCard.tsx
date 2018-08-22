@@ -14,14 +14,14 @@ class ReleaseNoteCard extends Component<ReleaseNoteCardProps> {
     const markdownDescription = marked(note.description)
 
     return (
-      <div className="w-75 b--silver ba br3 ph7 pv6">
-        <div className="w-100 flex flex-row justify-between">
+      <div className="w-75 b--silver ba br3 pa5 ph7-ns pv6-ns">
+        <div className="w-100 flex flex-column flex-row-ns justify-between pb4 pb0-ns">
           <div className="w-75">
             <span className="fw4 f3 near-black">
               {note.appName} - {note.title}
             </span>
           </div>
-          <div className="">
+          <div className="pt4 pt0-ns">
             <Badge className="near-black ba b--near-black">
               <TagIcon /><span className="f5 pl2">{note.version}</span>
             </Badge>

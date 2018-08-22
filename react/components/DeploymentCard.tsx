@@ -42,7 +42,7 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
     const badgeBgColor = isBeta ? 'bg-white ba b--rebel-pink' : 'bg-rebel-pink'
     const badgeColor = isBeta ? 'rebel-pink' : 'white'
     const commitText = deployment.commitsTotal === 0 ? "No new commits" : `${deployment.commitsTotal} commit${deployment.commitsTotal > 1 ? 's' : ''}`
-    
+
     const authors = mapAuthorWithIndex((author: Author, index: number) => {
       return (
         <div key={author.username + index} className="pl2">
@@ -52,12 +52,12 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
     }, deployment.authors)
 
     return (
-      <div className="w-75 b--silver ba br3 ph7 pv6">
-        <div className="w-100 flex flex-row justify-between">
+      <div className="w-75 b--silver ba br3 pa5 ph7-ns pv6-ns">
+        <div className="w-100 flex flex-column flex-row-ns justify-between pb4 pb0-ns">
           <span className="fw4 f3 near-black">
             {deployment.appName}
           </span>
-          <div className="">
+          <div className="pt4 pt0-ns">
             <Badge className={`${badgeBgColor} ${badgeColor}`}>
               {deployment.environment}
             </Badge>
@@ -67,13 +67,14 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
           </div>
         </div>
         <div className="w-100 mt4">
-          <div className="w-100 flex flex-row justify-between">
+          <div className="w-100 flex flex-row justify-between items-center">
             <div className="flex flex-row">
               {authors}
             </div>
             <div className="flex flex-row items-center">
               <GithubIcon />
-              <span className="pl3 f5 near-black">{commitText}</span>
+              <span className="dn-s db-ns pl3 f5 near-black">{commitText}</span>
+              <span className="dn-ns pl3 f5 near-black">{deployment.commitsTotal}</span>
               <Button variation='tertiary' onClick={this.onExpandClick}> 
                 { isOpen ? 'COLLAPSE'  : 'EXPAND'}
               </Button>

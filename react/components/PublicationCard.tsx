@@ -26,12 +26,12 @@ class PublicationCard extends Component<PublicationCardProps> {
     }, publication.authors)
 
     return (
-      <div className="w-75 b--silver ba br3 ph7 pv6">
-        <div className="w-100 flex flex-row justify-between">
+      <div className="w-75 b--silver ba br3 pa5 ph7-ns pv6-ns">
+        <div className="w-100 flex flex-column flex-row-ns justify-between pb4 pb0-ns">
           <span className="fw4 f3 near-black">
             {publication.appName}
           </span>
-          <div className="">
+          <div className="pt4 pt0-ns">
             <Badge className={`${badgeBgColor} ${badgeColor}`}>
               {publication.environment}
             </Badge>
