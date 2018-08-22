@@ -37,15 +37,15 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps> {
     )
 
     return (
-      <div className="flex flex-row flex-none justify-between pv6 ph8">
-        <div className="w-25">
+      <div className="flex flex-column flex-row-ns flex-none justify-between-ns ph5 pv5 pv6-ns ph8-ns">
+        <div className="w-25-ns">
           <Dropdown
             onChange={handleAppChange}
             options={projectOptions}
             value={appName}
           />
         </div>
-        <div className="flex flex-row">
+        <div className="flex flex-row-ns pt4-s justify-end-s">
           <div className="pr4">
             <Checkbox
               checked={envs.includes('stable')}
