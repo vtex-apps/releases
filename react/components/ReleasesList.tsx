@@ -74,7 +74,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     const { envs, releases } = this.state
 
     return (
-      <div className="pt7 flex flex-column">
+      <div className="pt7-ns flex flex-column">
         <ReleasesListFilter 
           appName={appName}
           envs={envs}
