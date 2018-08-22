@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Tab, Tabs } from 'vtex.styleguide'
 
+import Overview from './Overview'
 import ReleasesList from './ReleasesList'
 import ReleasesNotesList from './ReleasesNotesList'
 
@@ -38,6 +39,13 @@ class ReleasesContent extends Component<{}, ReleasesContentState> {
     const { appName, contentType } = this.state
 
     switch(contentType) {
+      case 'overview':
+        return (
+          <Overview 
+            appName={appName} 
+            handleAppChange={this.handleAppChange}
+          />
+        )
       case 'releases':
         return (
           <ReleasesList 
