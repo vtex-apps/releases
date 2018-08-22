@@ -68,7 +68,7 @@ class Overview extends Component<OverviewProps, OverviewState> {
     const statisticElements = mapWithIndex((stat: number, index: number) => {
       const name = STATISTIC_NAMES[index]
       return (
-        <div key={name} className="w-50 flex flex-column">
+        <div key={name} className="w-50 pb6 pa0-ns flex flex-column">
           <div className="w-100 flex justify-center">
             <span className="silver f5 fw4 tracked">{name}</span>
           </div>
@@ -80,7 +80,7 @@ class Overview extends Component<OverviewProps, OverviewState> {
     }, statisticNumbers)
 
     return (
-      <div className="flex flex-row-ns justify-between-ns pv7">
+      <div className="flex flex-column flex-row-ns items-center justify-between-ns pv7">
         {statisticElements}
       </div>
     )
@@ -99,7 +99,7 @@ class Overview extends Component<OverviewProps, OverviewState> {
     const { envs } = this.state
 
     return (
-      <div className="pt7 flex flex-column">
+      <div className="pt7-ns flex flex-column">
         <ReleasesListFilter
           appName={appName}
           envs={envs}
