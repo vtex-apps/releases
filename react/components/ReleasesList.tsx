@@ -184,7 +184,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
 
     return (
       <div 
-        className="ph8 pv4 flex-auto overflow-y-scroll"
+        className="pa5 ph8-ns pv4-ns flex-auto overflow-y-scroll"
         onScroll={this.onScroll}
       >
         {releasesList}

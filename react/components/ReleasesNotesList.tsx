@@ -91,7 +91,7 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
 
     return (
       <div
-        className="w-100 ph8 pt9 overflow-y-scroll"
+        className="pa5 ph8-ns pv4-ns flex-auto overflow-y-scroll"
         onScroll={this.onScroll}
       >
         {notesList}
