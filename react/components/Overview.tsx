@@ -115,11 +115,16 @@ class Overview extends Component<OverviewProps, OverviewState> {
   }
 }
 
-export default compose(
-  graphql<StatisticData>(Statistic, {
-    name: 'statistic',
-    options: {
-      ssr: false
-    }
+const statisticOptions = {
+  name: 'statistic',
+  options: (props: OverviewProps) => ({
+    variables: {
+      appName: props.appName,
+    },
+    ssr: false
   }),
+}
+
+export default compose(
+  graphql<OverviewProps, StatisticData>(Statistic, statisticOptions),
 )(Overview)
