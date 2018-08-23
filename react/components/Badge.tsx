@@ -9,7 +9,7 @@ class Badge extends Component<BadgeProps> {
     const { className } = this.props
 
     return (
-      <div className={`${className} br-pill f6 pv2 ph3 dib fw5`}>
+      <div className={`${className} br-pill f7 f6-ns pv2 ph3 dib fw5`}>
         {this.props.children}
       </div>
     )

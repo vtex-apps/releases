@@ -40,7 +40,7 @@ class ReleasesPage extends Component<{} & ProfileData, ReleasesPageState> {
         className="w-100 h-100 bg-light-silver overflow-hidden overflow-y-scroll"
         onScroll={this.onScroll}
       >
-        <div className="w-100 flex flex-row flex-none justify-between pa7">
+        <div className="w-100 flex flex-row flex-none justify-between pa7-ns pt5 pl5 pr5 pb7 items-center" >
           <VtexIcon />
           <div className="flex flex-row items-center justify-center">
             {firstName ? <p>{firstName}</p> : <SkeletonPiece />}

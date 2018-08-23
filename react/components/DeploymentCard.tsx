@@ -67,7 +67,7 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
     return (
       <div className="flex-auto b--silver ba br3 pa5 ph7-ns pv7-ns">
         <div className="w-100 flex flex-column flex-row-ns justify-between pb4 pb0-ns">
-          <span className="fw4 f3 near-black">
+          <span className="fw4 f4 f3-ns near-black">
             {deployment.appName}
           </span>
           <div className="pt4 pt0-ns">
@@ -88,7 +88,7 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
               <GithubIcon />
               <span className="dn-s db-ns pl3 f5 near-black">{commitText}</span>
               <span className="dn-ns pl3 f5 near-black">{deployment.commitsTotal}</span>
-              <div className="w4-ns">
+              <div className="w4 nr5 nr0-ns">
                 <Button variation='tertiary' onClick={this.onExpandClick}>
                   {isOpen
                     ? <FormattedMessage id="releases.card.button.collapse" />
@@ -168,7 +168,7 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
       ? mapDependenciesWithIndex((dependency: Dependency, index: number) => {
         return (
           <div key={dependency.name + dependency.version + index} className="dib">
-            <div className="br-pill pv2 ph3 bg-muted-5 ma2 f6">
+            <div className="br-pill pv2 ph3 bg-muted-5 ma2 f6"  style={{ wordBreak: 'break-all' }} >
                  {dependency.name} - {dependency.version}
             </div>
           </div>
@@ -177,10 +177,10 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
       : []
 
     return (
-      <div className="w-100 flex flex-column near-black">
+      <div className="w-100 flex flex-column near-black pt4">
         <div className="w-100 pt6-ns">
           <span className="f6 fw7">Commits</span>
-          <div className="w-100 pt4-ns pb6-ns code lh-copy f6">
+          <div className="w-100 pt4-ns pv4 pb6-ns code lh-copy f6">
             <ul className="pa0 ma0 list">
               {commits}
             </ul>

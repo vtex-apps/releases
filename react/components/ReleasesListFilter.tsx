@@ -50,7 +50,7 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps & ReactInt
     )
 
     return (
-      <div className="flex flex-column flex-row-ns flex-none justify-between-ns ph5 pt5 pt8-ns ph8-ns">
+      <div className="flex flex-column flex-row-ns flex-none justify-between-ns ph5 pt7 pb5 pb0-ns pt8-ns ph8-ns">
         <div className="w-25-ns">
           <Dropdown
             onChange={handleAppChange}
@@ -58,7 +58,7 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps & ReactInt
             value={appName}
           />
         </div>
-        <div className="flex flex-row-ns pt4-s justify-end-s">
+        <div className="flex flex-row-ns pt4 justify-start">
         <div className="pr4">
             <Radio
               checked={env === 'all'}

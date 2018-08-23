@@ -16,9 +16,9 @@ class ReleaseTime extends Component<ReleaseTimeProps> {
     const curYear = curDate.year()
 
     return (
-      <div className="z-1 bg-white flex flex-column pb5 pa0-ns mr6-ns items-center">
-        <span className="f2 fw3 rebel-pink lh-solid">{date.date()}</span>
-        <span className="f4 f4-ns fw5 black lh-title">
+      <div className="z-1 bg-white flex pt4 flex-column pb2 pa0-ns mr6-ns items-center">
+        <span className="f2-ns f3 fw3 rebel-pink lh-solid">{date.date()}</span>
+        <span className="f4-ns f6 fw5 black lh-title">
           <FormattedMessage id={`releases.date.months.${date.month()}`} />
         </span>
         {curYear !== date.year() ? <span className="f3 fw5 light-gray">{date.year()}</span> : null}
@@ -39,13 +39,13 @@ class ReleaseTime extends Component<ReleaseTimeProps> {
     const { canAddDate, releaseDate } = this.props
     return (
       <NoSSR onSSR={this.renderSkeleton()}>
-        <div className="flex flex-column flex-none flex-row-ns justify-center justify-end-ns mr7-ns w4-ns">
+        <div className="flex flex-column flex-none flex-row-ns justify-center justify-end-ns mr7-ns w4-ns pr4 pr0-ns">
           {canAddDate ?
             this.renderDate(releaseDate)
             : null
           }
-          <div className="z-1 flex h3-ns">
-            <span className="f5 f4-ns bg-white fw5 gray silver-ns self-end-ns lh-copy">{releaseDate.format('HH:mm')}</span>
+          <div className="z-1 flex h3-ns self-center self-start-ns">
+            <span className="f6 f4-ns bg-white fw5 gray silver-ns self-end-ns lh-copy pv4 pv0-ns">{releaseDate.format('HH:mm')}</span>
           </div>
         </div>
       </NoSSR>
