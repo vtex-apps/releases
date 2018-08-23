@@ -84,7 +84,7 @@ class ReleasesContent extends Component<ReleasesContentProps, ReleasesContentSta
                 handleContentChange={this.handleContentChange}
               />
             </div>
-            <div className="w-100 flex-auto bg-white br2">
+            <div className="w-100 bg-white br2">
               {this.selectContent()}
             </div>
           </div>

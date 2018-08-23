@@ -36,7 +36,7 @@ class ReleasesPage extends Component<{} & ProfileData, ReleasesPageState> {
       : ''
     console.log(this.state.bottom)
     return (
-      <div 
+      <div
         className="w-100 h-100 bg-light-silver overflow-hidden overflow-y-scroll"
         onScroll={this.onScroll}
       >
