@@ -37,7 +37,7 @@ class Overview extends Component<OverviewProps, OverviewState> {
     const newEnv = event.target.value
 
     this.setState((prevState) => {
-      return { ...prevState, envs: newEnv }
+      return { ...prevState, env: newEnv }
     })
   }
 
