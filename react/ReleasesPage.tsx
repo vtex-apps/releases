@@ -5,6 +5,7 @@ import ReleasesContent from './components/ReleasesContent'
 
 import Profile from './queries/Profile.graphql'
 
+import SkeletonPiece from './components/SkeletonPiece'
 import LogoutIcon from './icons/LogoutIcon'
 import VtexIcon from './icons/VtexIcon'
 
@@ -15,6 +16,10 @@ interface ProfileData {
 }
 
 class ReleasesPage extends Component<{} & ProfileData> {
+  constructor(props: any) {
+    super(props)
+  }
+
   public render() {
     const { profile: { profile } } = this.props
 
@@ -27,8 +32,10 @@ class ReleasesPage extends Component<{} & ProfileData> {
         <div className="w-100 flex flex-row flex-none justify-between pa7">
           <VtexIcon />
           <div className="flex flex-row items-center justify-center">
-            <p>{firstName}</p>
-            <div className="pl3 pointer">
+            {firstName ? <p>{firstName}</p> : <SkeletonPiece />}
+            <div
+              className="pl3 pointer"
+              onClick={this.logout}>
               <LogoutIcon />
             </div>
           </div>
@@ -36,6 +43,10 @@ class ReleasesPage extends Component<{} & ProfileData> {
         <ReleasesContent />
       </div>
     )
+  }
+
+  private logout = () => {
+    window.location.href = '/admin/logout?redirectUrl=releases'
   }
 }
 
