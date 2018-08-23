@@ -10,6 +10,7 @@
     "@types/react-intl": "^2.3.9",
     "@types/react-motion": "0.0.27",
     "@types/react-no-ssr": "^1.1.1",
+    "@types/react-tooltip": "^3.3.6",
     "@vtex/styleguide": "5.4.3",
     "apollo-client": "^2.3.8",
     "axios": "^0.18.0",
@@ -20,7 +21,8 @@
     "react": "^16.4.2",
     "react-apollo": "^2.1.11",
     "react-intl": "^2.4.0",
-    "react-motion": "^0.5.2"
+    "react-motion": "^0.5.2",
+    "react-tooltip": "^3.6.1"
   },
   "devDependencies": {
     "tslint": "^5.11.0",

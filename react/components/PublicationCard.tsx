@@ -1,6 +1,7 @@
 import { addIndex, map } from 'ramda'
 import React, { Component } from 'react'
 import { FormattedMessage } from 'react-intl'
+import ReactTooltip from 'react-tooltip'
 import Badge from './Badge'
 
 import RefreshIcon from '../icons/RefreshIcon'
@@ -19,9 +20,17 @@ class PublicationCard extends Component<PublicationCardProps> {
     const badgeColor = isBeta ? 'rebel-pink' : 'white'
 
     const authors = mapAuthorWithIndex((author: Author, index: number) => {
+      const key = publication.date + author.username + index
       return (
-        <div key={author.username + index} className="pl2">
-          <img className="br-pill" src={author.gravatarURL} />
+        <div key={key} className="pl2">
+          <img data-tip
+            data-for={key}
+            className="br-pill"
+            src={author.gravatarURL}
+          />
+          <ReactTooltip id={key} effect='solid' place='bottom'>
+            <span>{author.username}</span>
+          </ReactTooltip>
         </div>
       )
     }, publication.authors)

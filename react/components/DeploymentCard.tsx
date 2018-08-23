@@ -1,7 +1,8 @@
 import { addIndex, map } from 'ramda'
 import React, { Component } from 'react'
-import { FormattedMessage } from 'react-intl'
 import { withApollo, WithApolloClient } from 'react-apollo'
+import { FormattedMessage } from 'react-intl'
+import ReactTooltip from 'react-tooltip'
 import { Button, Spinner } from 'vtex.styleguide'
 
 import GithubIcon from '../icons/GithubIcon'
@@ -47,9 +48,18 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
       : `${deployment.commitsTotal} commit${deployment.commitsTotal > 1 ? 's' : ''}`
 
     const authors = mapAuthorWithIndex((author: Author, index: number) => {
+      const key = deployment.date + author.username + index
       return (
-        <div key={author.username + index} className="pl2">
-          <img className="br-pill" src={author.gravatarURL} />
+        <div key={key} className="pl2">
+          <img
+            data-tip
+            data-for={key}
+            className="br-pill"
+            src={author.gravatarURL}
+          />
+          <ReactTooltip id={key} effect='solid' place='bottom'>
+            <span>{author.username}</span>
+          </ReactTooltip>
         </div>
       )
     }, deployment.authors)

@@ -1,5 +1,6 @@
 import marked from 'marked'
 import React, { Component } from 'react'
+import ReactTooltip from 'react-tooltip'
 import Badge from './Badge'
 
 import TagIcon from '../icons/TagIcon'
@@ -30,7 +31,19 @@ class ReleaseNoteCard extends Component<ReleaseNoteCardProps> {
         <div className="w-100 mt4">
           <div className="w-100 flex flex-row justify-between">
             <div className="flex flex-row">
-              <img className="br-pill w-auto" src={note.author.gravatarURL} style={{ height: '40px' }}/>
+              <img
+                className="br-pill w-auto"
+                data-tip data-for={note.date + note.appName}
+                src={note.author.gravatarURL}
+                style={{ height: '40px' }}
+              />
+              <ReactTooltip
+                id={note.date + note.appName}
+                effect='solid'
+                place='bottom'
+              >
+                <span>{note.author.username}</span>
+              </ReactTooltip>
             </div>
           </div>
           <div className="w-100 br3 br--bottom">
