@@ -50,7 +50,7 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps & ReactInt
     )
 
     return (
-      <div className="flex flex-column flex-row-ns flex-none justify-between-ns ph5 pt5 pv6-ns ph8-ns">
+      <div className="flex flex-column flex-row-ns flex-none justify-between-ns ph5 pt5 pt8-ns ph8-ns">
         <div className="w-25-ns">
           <Dropdown
             onChange={handleAppChange}

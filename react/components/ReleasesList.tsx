@@ -86,17 +86,17 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     const { env, releases } = this.state
 
     return (
-      <div className="pt7-ns">
-        <ReleasesListFilter 
+      <div>
+        <ReleasesListFilter
           appName={appName}
           env={env}
           handleAppChange={handleAppChange}
           handleEnvChange={this.handleEnvChange}
         />
-        { 
-          loading || releases === undefined 
-            ? this.renderLoading() 
-            : this.renderReleasesList() 
+        {
+          loading || releases === undefined
+            ? this.renderLoading()
+            : this.renderReleasesList()
         }
       </div>
     )
@@ -174,7 +174,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
       : null
 
     return (
-      <div className="pa5 ph8-ns pv4-ns" >
+      <div className="pa5 ph8-ns pv6-ns" >
         {releasesList}
         {isLoading ? this.renderLoading() : null}
       </div>

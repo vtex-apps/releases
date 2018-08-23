@@ -65,7 +65,7 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
     }, deployment.authors)
 
     return (
-      <div className="flex-auto b--silver ba br3 pa5 ph7-ns pv6-ns">
+      <div className="flex-auto b--silver ba br3 pa5 ph7-ns pv7-ns">
         <div className="w-100 flex flex-column flex-row-ns justify-between pb4 pb0-ns">
           <span className="fw4 f3 near-black">
             {deployment.appName}
@@ -84,16 +84,18 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
             <div className="flex flex-row">
               {authors}
             </div>
-            <div className="flex flex-row items-center">
+            <div className="flex flex-row items-center nr6-ns">
               <GithubIcon />
               <span className="dn-s db-ns pl3 f5 near-black">{commitText}</span>
               <span className="dn-ns pl3 f5 near-black">{deployment.commitsTotal}</span>
-              <Button variation='tertiary' onClick={this.onExpandClick}>
-                {isOpen
-                  ? <FormattedMessage id="releases.card.button.collapse" />
-                  : <FormattedMessage id="releases.card.button.expand" />
-                }
-              </Button>
+              <div className="w4-ns">
+                <Button variation='tertiary' onClick={this.onExpandClick}>
+                  {isOpen
+                    ? <FormattedMessage id="releases.card.button.collapse" />
+                    : <FormattedMessage id="releases.card.button.expand" />
+                  }
+                </Button>
+              </div>
             </div>
           </div>
           {isOpen
@@ -157,7 +159,7 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
     const commits = deployment.commits
       ? mapCommitsWithIndex((commit: Commit, index: number) => {
         return (
-          <li key={commit.title + index}>{commit.title}</li>
+          <li key={commit.title + index}>- {commit.title}</li>
         )
       }, deployment.commits)
       : []
@@ -165,28 +167,28 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
     const dependencies = deployment.dependencies
       ? mapDependenciesWithIndex((dependency: Dependency, index: number) => {
         return (
-          <div key={dependency.name + dependency.version + index} className="pr2 pb2 dib">
-            <Badge>
-              {dependency.name} - {dependency.version}
-            </Badge>
+          <div key={dependency.name + dependency.version + index} className="dib">
+            <div className="br-pill pv2 ph3 bg-muted-5 ma2 f6">
+                 {dependency.name} - {dependency.version}
+            </div>
           </div>
         )
       }, deployment.dependencies)
       : []
 
     return (
-      <div className="w-100 ph3 pt2 pb4 flex flex-column near-black">
-        <div className="w-100">
-          <span className="f5 underline">Commits</span>
-          <div className="w-100 pb3">
-            <ul>
+      <div className="w-100 flex flex-column near-black">
+        <div className="w-100 pt6-ns">
+          <span className="f6 fw7">Commits</span>
+          <div className="w-100 pt4-ns pb6-ns code lh-copy f6">
+            <ul className="pa0 ma0 list">
               {commits}
             </ul>
           </div>
         </div>
         <div className="w-100">
           <div className="pb3">
-            <span className="f5 underline">
+            <span className="f6 fw7">
               <FormattedMessage id="releases.card.dependencies" />
             </span>
           </div>

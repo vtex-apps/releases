@@ -99,7 +99,7 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
       : []
 
     return (
-      <div className="pa5 ph8-ns pv4-ns ">
+      <div className="pa5 ph8-ns pt8-ns pb6-ns">
         {notesList}
         {isLoading ? this.renderLoading() : null}
       </div>

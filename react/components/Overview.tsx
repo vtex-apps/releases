@@ -127,7 +127,7 @@ class Overview extends Component<WithApolloClient<StatisticData> & OverviewProps
     const loading = queryLoading || loadingNewEnv
 
     return (
-      <div className="pt7-ns flex flex-column">
+      <div className="flex flex-column">
         <ReleasesListFilter
           appName={appName}
           env={env}

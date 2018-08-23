@@ -36,7 +36,7 @@ class PublicationCard extends Component<PublicationCardProps> {
     }, publication.authors)
 
     return (
-      <div className="flex-auto b--silver ba br3 pa5 ph7-ns pv6-ns">
+      <div className="flex-auto b--silver ba br3 pa5 ph7-ns pv7-ns">
         <div className="w-100 flex flex-column flex-row-ns justify-between pb4 pb0-ns">
           <span className="fw4 f3 near-black">
             {publication.appName}

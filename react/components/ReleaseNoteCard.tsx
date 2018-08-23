@@ -15,11 +15,14 @@ class ReleaseNoteCard extends Component<ReleaseNoteCardProps> {
     const markdownDescription = marked(note.description)
 
     return (
-      <div className="flex-auto b--silver ba br3 pa5 ph7-ns pv6-ns">
+      <div className="flex-auto b--silver ba br3 pa5 ph7-ns pv7-ns">
         <div className="w-100 flex flex-column flex-row-l justify-between pb4 pb0-l">
           <div className="w-75">
             <span className="fw4 f3 near-black">
-              {note.appName} - {note.title}
+              {note.appName}
+            </span>
+            <span className="db pt3 lh-title c-muted-1 pb4">
+              {note.title}
             </span>
           </div>
           <div className="pt4 pt0-l">
@@ -46,8 +49,8 @@ class ReleaseNoteCard extends Component<ReleaseNoteCardProps> {
               </ReactTooltip>
             </div>
           </div>
-          <div className="w-100 br3 br--bottom">
-            <div className="near-black" dangerouslySetInnerHTML={{ __html: markdownDescription }}></div>
+          <div className="w-100 br3 br--bottom pt3">
+            <div className="near-black f5 lh-title list" dangerouslySetInnerHTML={{ __html: markdownDescription }}></div>
           </div>
         </div>
       </div>
