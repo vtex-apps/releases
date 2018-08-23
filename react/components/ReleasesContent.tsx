@@ -6,12 +6,16 @@ import Overview from './Overview'
 import ReleasesList from './ReleasesList'
 import ReleasesNotesList from './ReleasesNotesList'
 
+interface ReleasesContentProps {
+  bottom: boolean
+}
+
 interface ReleasesContentState {
   appName: string
   contentType: string
 }
 
-class ReleasesContent extends Component<{}, ReleasesContentState> {
+class ReleasesContent extends Component<ReleasesContentProps, ReleasesContentState> {
   constructor(props: any) {
     super(props)
 
@@ -52,10 +56,11 @@ class ReleasesContent extends Component<{}, ReleasesContentState> {
           <ReleasesList
             appName={appName}
             handleAppChange={this.handleAppChange}
+            bottom={this.props.bottom}
           />
         )
       case 'notes':
-        return <ReleasesNotesList />
+        return <ReleasesNotesList bottom={this.props.bottom}/>
       default:
         return null
     }
@@ -67,7 +72,7 @@ class ReleasesContent extends Component<{}, ReleasesContentState> {
     return (
       <div className="w-100 h-100 flex-auto">
         <div className="h-100 w-100 flex flex-column items-center">
-          <div className="w-100 w-75-l mw9 flex flex-column">
+          <div className="w-100 w-75-l mw9">
             <div className="ph5">
               <div className="mb7">
                 <span className="near-black f1 fw6">
@@ -79,7 +84,7 @@ class ReleasesContent extends Component<{}, ReleasesContentState> {
                 handleContentChange={this.handleContentChange}
               />
             </div>
-            <div className="w-100 flex-auto bg-white br2 flex flex-column">
+            <div className="w-100 flex-auto bg-white br2">
               {this.selectContent()}
             </div>
           </div>

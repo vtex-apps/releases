@@ -21,6 +21,7 @@ interface ReleasesQuery {
 
 interface ReleasesListProps {
   appName: string
+  bottom: boolean
   handleAppChange: (event: any) => void
 }
 
@@ -48,14 +49,14 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
   }
 
   public componentDidUpdate(prevProps: ReleasesListProps, prevState: ReleasesListState) {
-    const { appName, releases: { releases: curReleases } } = this.props
+    const { appName, bottom, releases: { releases: curReleases } } = this.props
     const { releases: prevReleasesState } = prevState
     const { releases } = this.state
 
     if (prevProps.appName !== appName) {
-      this.setState((prevState) => {
+      this.setState((pState) => {
         return ({
-          ...prevState,
+          ...pState,
           lastPage: false,
           releases: undefined
         })
@@ -63,8 +64,19 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     }
 
     if (!prevReleasesState && !releases && curReleases) {
-      this.setState((prevState) => {
-        return ({ ...prevState, releases: curReleases })
+      this.setState((pState) => {
+        return ({ ...pState, releases: curReleases })
+      })
+    }
+
+    if (!prevProps.bottom && bottom) {
+      this.setState((pState) => {
+        const nextPage = pState.nextPage
+        const currReleases = pState.releases as Release[]
+        const endDate = currReleases.length ? currReleases[currReleases.length - 1].date : ''
+        this.getPage(nextPage, endDate)
+
+        return { ...pState, isLoading: true, nextPage: nextPage + 1 }
       })
     }
   }
@@ -74,7 +86,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     const { env, releases } = this.state
 
     return (
-      <div className="pt7-ns flex flex-column">
+      <div className="pt7-ns">
         <ReleasesListFilter 
           appName={appName}
           env={env}
@@ -125,23 +137,6 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     })
   }
 
-  private onScroll = (event: any) => {
-    const { isLoading, lastPage } = this.state
-    const element = event.target
-    const bottom = element.scrollHeight - element.scrollTop === element.clientHeight
-
-    if (bottom && !isLoading && !lastPage) {
-      this.setState((prevState) => {
-        const nextPage = prevState.nextPage
-        const releases = prevState.releases as Release[]
-        const endDate = releases.length ? releases[releases.length - 1].date : ''
-        this.getPage(nextPage, endDate)
-
-        return { isLoading: true, nextPage: nextPage + 1 }
-      })
-    }
-  }
-
   private renderReleasesList = () => {
     const { isLoading, releases, env } = this.state
 
@@ -179,10 +174,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
       : null
 
     return (
-      <div 
-        className="pa5 ph8-ns pv4-ns flex-auto overflow-y-scroll"
-        onScroll={this.onScroll}
-      >
+      <div className="pa5 ph8-ns pv4-ns" >
         {releasesList}
         {isLoading ? this.renderLoading() : null}
       </div>

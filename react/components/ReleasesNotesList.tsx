@@ -15,6 +15,7 @@ interface ReleasesNotesData {
 }
 
 interface ReleasesNotesProps {
+  bottom: boolean
   client: ApolloClient<any>
   releasesNotes: any
 }
@@ -43,7 +44,7 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
   public componentDidUpdate(prevProps: ReleasesNotesProps, _: ReleasesNotesState) {
     const { releasesNotes: { loading: prevLoading } } = prevProps
     const { releasesNotes: curStateNotes } = this.state
-    const { releasesNotes: { releasesNotes: curPropsNotes, loading: curLoading } } = this.props
+    const { bottom, releasesNotes: { releasesNotes: curPropsNotes, loading: curLoading } } = this.props
 
     if (prevLoading && !curLoading && !curStateNotes) {
       this.setState((prevState) => {
@@ -52,6 +53,14 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
           isLoading: false,
           releasesNotes: curPropsNotes
         })
+      })
+    }
+
+    if (!prevProps.bottom && bottom) {
+      this.setState((pState) => {
+        this.getPage(pState.nextPage)
+
+        return { ...pState, isLoading: true, nextPage: pState.nextPage + 1 }
       })
     }
   }
@@ -90,10 +99,7 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
       : []
 
     return (
-      <div
-        className="pa5 ph8-ns pv4-ns flex-auto overflow-y-scroll"
-        onScroll={this.onScroll}
-      >
+      <div className="pa5 ph8-ns pv4-ns ">
         {notesList}
         {isLoading ? this.renderLoading() : null}
       </div>
@@ -118,20 +124,6 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
         })
       })
     })
-  }
-
-  private onScroll = (event: any) => {
-    const { isLoading, lastPage } = this.state
-    const element = event.target
-    const bottom = element.scrollHeight - element.scrollTop === element.clientHeight
-
-    if (bottom && !isLoading && !lastPage) {
-      this.setState((prevState) => {
-        this.getPage(prevState.nextPage)
-
-        return { isLoading: true, nextPage: prevState.nextPage + 1 }
-      })
-    }
   }
 
   private renderLoading = () => {

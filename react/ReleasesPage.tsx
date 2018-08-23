@@ -15,9 +15,17 @@ interface ProfileData {
   profile: any
 }
 
-class ReleasesPage extends Component<{} & ProfileData> {
+interface ReleasesPageState {
+  bottom: boolean
+}
+
+class ReleasesPage extends Component<{} & ProfileData, ReleasesPageState> {
   constructor(props: any) {
     super(props)
+
+    this.state = {
+      bottom: false
+    }
   }
 
   public render() {
@@ -26,9 +34,12 @@ class ReleasesPage extends Component<{} & ProfileData> {
     const firstName = profile
       ? profile.name.split(' ')[0]
       : ''
-
+    console.log(this.state.bottom)
     return (
-      <div className="w-100 h-100 bg-light-silver overflow-hidden flex flex-column">
+      <div
+        className="w-100 h-100 bg-light-silver overflow-hidden overflow-y-scroll"
+        onScroll={this.onScroll}
+      >
         <div className="w-100 flex flex-row flex-none justify-between pa7">
           <VtexIcon />
           <div className="flex flex-row items-center justify-center">
@@ -40,13 +51,24 @@ class ReleasesPage extends Component<{} & ProfileData> {
             </div>
           </div>
         </div>
-        <ReleasesContent />
+        <ReleasesContent bottom={this.state.bottom} />
       </div>
     )
   }
 
   private logout = () => {
     window.location.href = '/admin/logout?redirectUrl=releases'
+  }
+
+  private onScroll = (event: any) => {
+    const element = event.target
+    const bottom = element.scrollHeight - element.scrollTop === element.clientHeight
+
+    if (bottom) {
+      this.setState({ bottom: true })
+    } else if (this.state.bottom) {
+      this.setState({ bottom: false })
+    }
   }
 }
 
