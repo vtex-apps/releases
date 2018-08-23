@@ -103,12 +103,8 @@ interface ReleaseNote {
 }
 
 interface Statistic {
-  stableLastHour: number,
-  stableLast3Hours: number,
-  stableLast7Days: number,
-  stableLast30Days: number,
-  preReleaseLastHour: number,
-  preReleaseLast3Hours: number,
-  preReleaseLast7Days: number,
-  preReleaseLast30Days: number
+  lastHour: number,
+  last3Hours: number,
+  last7Days: number,
+  last30Days: number
 }

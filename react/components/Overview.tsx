@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl'
-import { addIndex, filter, map } from 'ramda'
+import { addIndex, map } from 'ramda'
 import React, { Component } from 'react'
-import { compose, graphql } from 'react-apollo'
+import { compose, graphql, withApollo, WithApolloClient } from 'react-apollo'
 import { Spinner } from 'vtex.styleguide'
 
 import Statistic from '../queries/Statistic.graphql'
@@ -13,6 +13,8 @@ interface StatisticData {
 
 interface OverviewState {
   env: Environment
+  loadingNewEnv: boolean
+  statistic?: Statistic
 }
 
 interface OverviewProps {
@@ -24,12 +26,50 @@ interface OverviewProps {
 const STATISTIC_NAMES = ['hour', '3hours', '7days', '30days']
 const mapWithIndex = addIndex<number, JSX.Element>(map)
 
-class Overview extends Component<OverviewProps, OverviewState> {
+class Overview extends Component<WithApolloClient<StatisticData> & OverviewProps, OverviewState> {
   constructor(props: any) {
     super(props)
 
     this.state = {
-      env: 'all'
+      env: 'all',
+      statistic: undefined,
+      loadingNewEnv: true
+    }
+  }
+
+  public componentDidUpdate(_: OverviewProps, prevState: OverviewState) {
+    const { appName, client, statistic: { statistic: curStatInProps } } = this.props
+    const { env: currEnv, statistic: curStatInState } = this.state
+    const { env: prevEnv, statistic: prevStatInState } = prevState
+
+    if (prevEnv != currEnv) {
+      client.query<StatisticData>({
+        query: Statistic,
+        variables: {
+          appName,
+          env: currEnv
+        }
+      }).then((data) => {
+        const statistic = data.data.statistic
+        console.log(statistic)
+        this.setState((prevState) => {
+          return ({
+            ...prevState,
+            loadingNewEnv: false,
+            statistic
+          })
+        })
+      })
+    }
+
+    if (curStatInProps && !curStatInState && !prevStatInState) {
+      this.setState((prevState) => {
+        return ({
+          ...prevState,
+          loadingNewEnv: false,
+          statistic: curStatInProps
+        })
+      })
     }
   }
 
@@ -37,32 +77,19 @@ class Overview extends Component<OverviewProps, OverviewState> {
     const newEnv = event.target.value
 
     this.setState((prevState) => {
-      return { ...prevState, env: newEnv }
+      return { ...prevState, loadingNewEnv: true, env: newEnv }
     })
   }
 
   public renderStatistics = () => {
-    const { statistic: { statistic } } = this.props
-    const { env } = this.state
-    const envs = env === 'all' ? [ 'stable', 'beta' ] : [ env ]
-    let lastHour, last3Hours, last7Days, last30Days
-    lastHour = last3Hours = last7Days = last30Days = 0
+    const { statistic } = this.state
 
-    if (envs.includes('stable')) {
-      lastHour += statistic.stableLastHour
-      last3Hours += statistic.stableLast3Hours
-      last7Days += statistic.stableLast7Days
-      last30Days += statistic.stableLast30Days
-    }
-
-    if (envs.includes('beta')) {
-      lastHour += statistic.preReleaseLastHour
-      last3Hours += statistic.preReleaseLast3Hours
-      last7Days += statistic.preReleaseLast7Days
-      last30Days += statistic.preReleaseLast30Days
-    }
-
-    const statisticNumbers = [lastHour, last3Hours, last7Days, last30Days]
+    const statisticNumbers = [
+      statistic ? statistic.lastHour : 0, 
+      statistic ? statistic.last3Hours : 0, 
+      statistic ? statistic.last7Days : 0, 
+      statistic ? statistic.last30Days : 0
+    ]
     const statisticElements = mapWithIndex((stat: number, index: number) => {
       const name = STATISTIC_NAMES[index]
       return (
@@ -95,8 +122,9 @@ class Overview extends Component<OverviewProps, OverviewState> {
   }
 
   public render() {
-    const { appName, handleAppChange, statistic: { loading } } = this.props
-    const { env } = this.state
+    const { appName, handleAppChange, statistic: { loading: queryLoading } } = this.props
+    const { env, loadingNewEnv } = this.state
+    const loading = queryLoading || loadingNewEnv
 
     return (
       <div className="pt7-ns flex flex-column">
@@ -123,5 +151,6 @@ const statisticOptions = {
 }
 
 export default compose(
+  withApollo,
   graphql<OverviewProps, StatisticData>(Statistic, statisticOptions),
 )(Overview)
