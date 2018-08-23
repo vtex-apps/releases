@@ -25,5 +25,6 @@
   "releases.card.from": "De",
   "releases.card.button.collapse": "COLAPSAR",
   "releases.card.button.expand": "EXPANDIR",
-  "releases.filter.allProjects": "Todos los proyectos"
+  "releases.filter.allProjects": "Todos los proyectos",
+  "releases.filter.allEnvs": "Todos los ambientes"
 }

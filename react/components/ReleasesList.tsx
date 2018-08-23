@@ -25,7 +25,7 @@ interface ReleasesListProps {
 }
 
 interface ReleasesListState {
-  envs: Environment[]
+  env: Environment
   isLoading: boolean
   releases?: Release[]
   nextPage: number
@@ -39,7 +39,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     super(props)
 
     this.state = {
-      envs: ['stable', 'beta'],
+      env: 'all',
       isLoading: false,
       lastPage: false,
       nextPage: 2,
@@ -71,13 +71,13 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
 
   public render() {
     const { appName, handleAppChange, releases: { loading } } = this.props
-    const { envs, releases } = this.state
+    const { env, releases } = this.state
 
     return (
       <div className="pt7-ns flex flex-column">
         <ReleasesListFilter 
           appName={appName}
-          envs={envs}
+          env={env}
           handleAppChange={handleAppChange}
           handleEnvChange={this.handleEnvChange}
         />
@@ -91,14 +91,10 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
   }
 
   private handleEnvChange = (event: any) => {
-    const value = event.target.value
+    const newEnv = event.target.value
 
     this.setState((prevState) => {
-      const prevEnvs = prevState.envs
-      const newEnvs = prevEnvs.includes(value) 
-        ? filter((env: Environment) => env !== value, prevEnvs)
-        : [ ...prevEnvs, value]
-      return { ...prevState, envs: newEnvs }
+      return { ...prevState, env: newEnv }
     })
   }
 
@@ -147,11 +143,11 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
   }
 
   private renderReleasesList = () => {
-    const { isLoading, releases, envs } = this.state
+    const { isLoading, releases, env } = this.state
 
     const filteredReleases = releases
       ? filter((release: Release) => {
-        return envs.includes(release.environment as Environment)
+        return env === 'all' || release.environment === env
       }, releases)
       : []
 

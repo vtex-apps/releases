@@ -2,7 +2,7 @@ import { concat, map } from 'ramda'
 import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { injectIntl } from 'react-intl'
-import { Checkbox, Dropdown } from 'vtex.styleguide'
+import { Dropdown, Radio } from 'vtex.styleguide'
 
 import Projects from '../queries/Projects.graphql'
 
@@ -12,7 +12,7 @@ interface ProjectsData {
 
 interface FilterProps {
   appName: string
-  envs: Environment[]
+  env: Environment
   handleAppChange: (event: any) => void
   handleEnvChange: (event: any) => void
 }
@@ -30,7 +30,7 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps & ReactInt
   public render() {
     const {
       appName,
-      envs,
+      env,
       handleAppChange,
       handleEnvChange,
       intl,
@@ -59,9 +59,19 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps & ReactInt
           />
         </div>
         <div className="flex flex-row-ns pt4-s justify-end-s">
+        <div className="pr4">
+            <Radio
+              checked={env === 'all'}
+              id="all"
+              label={intl.formatMessage({ id: 'releases.filter.allEnvs' })}
+              value="all"
+              name="env-checkbox-group"
+              onChange={handleEnvChange}
+            />
+          </div>
           <div className="pr4">
-            <Checkbox
-              checked={envs.includes('stable')}
+            <Radio
+              checked={env === 'stable'}
               id="stable"
               label="Stable"
               value="stable"
@@ -70,8 +80,8 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps & ReactInt
             />
           </div>
           <div>
-            <Checkbox
-              checked={envs.includes('beta')}
+            <Radio
+              checked={env === 'beta'}
               id="beta"
               label="Beta"
               value="beta"

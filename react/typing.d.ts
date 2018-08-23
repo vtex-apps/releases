@@ -15,9 +15,10 @@ declare module 'vtex.styleguide' {
   const IconCaretRight: ReactElement
   const Tab: ReactElement
   const Tabs: ReactElement
+  const Radio: ReactElement
   const Spinner: ReactElement
 
-  export { Badge, Button, Checkbox, Dropdown, IconCaretRight, Tab, Tabs, Spinner }
+  export { Badge, Button, Checkbox, Dropdown, IconCaretRight, Tab, Tabs, Radio, Spinner }
 }
 
 declare module 'render' {
@@ -32,7 +33,7 @@ type ReleaseType = 'publication' | 'deployment'
 
 type ContentType = 'releases' | 'notes'
 
-type Environment = 'stable' | 'beta'
+type Environment = 'all' | 'stable' | 'beta'
 
 interface Author {
   gravatarURL: string

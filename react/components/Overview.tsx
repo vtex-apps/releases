@@ -12,7 +12,7 @@ interface StatisticData {
 }
 
 interface OverviewState {
-  envs: Environment[]
+  env: Environment
 }
 
 interface OverviewProps {
@@ -29,25 +29,22 @@ class Overview extends Component<OverviewProps, OverviewState> {
     super(props)
 
     this.state = {
-      envs: ['stable', 'beta']
+      env: 'all'
     }
   }
 
   public handleEnvChange = (event: any) => {
-    const value = event.target.value
+    const newEnv = event.target.value
 
     this.setState((prevState) => {
-      const prevEnvs = prevState.envs
-      const newEnvs = prevEnvs.includes(value)
-        ? filter((env: Environment) => env !== value, prevEnvs)
-        : [...prevEnvs, value]
-      return { ...prevState, envs: newEnvs }
+      return { ...prevState, envs: newEnv }
     })
   }
 
   public renderStatistics = () => {
     const { statistic: { statistic } } = this.props
-    const { envs } = this.state
+    const { env } = this.state
+    const envs = env === 'all' ? [ 'stable', 'beta' ] : [ env ]
     let lastHour, last3Hours, last7Days, last30Days
     lastHour = last3Hours = last7Days = last30Days = 0
 
@@ -99,13 +96,13 @@ class Overview extends Component<OverviewProps, OverviewState> {
 
   public render() {
     const { appName, handleAppChange, statistic: { loading } } = this.props
-    const { envs } = this.state
+    const { env } = this.state
 
     return (
       <div className="pt7-ns flex flex-column">
         <ReleasesListFilter
           appName={appName}
-          envs={envs}
+          env={env}
           handleAppChange={handleAppChange}
           handleEnvChange={this.handleEnvChange}
         />
