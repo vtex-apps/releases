@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 
-import ReleasesSidebar from './components/ReleasesSidebar'
 import ReleasesList from './components/ReleasesList'
 import ReleasesNotesList from './components/ReleasesNotesList'
+import ReleasesSidebar from './components/ReleasesSidebar'
 
 import './releases.global.css'
 
@@ -23,39 +23,6 @@ class ReleasesPage extends Component<{}, ReleasesPageState> {
     }
   }
 
-  public handleAppChange = (event: any) => {
-    const app = event.target.value as string
-
-    this.setState((prevState) => {
-      return ({
-        ...prevState,
-        app
-      })
-    })
-  }
-
-  public handleEnvChange = (event: any) => {
-    const env = event.target.value as Environment
-
-    this.setState((prevState) => {
-      return ({
-        ...prevState,
-        env
-      })
-    })
-  }
-
-  public handleContentChange = (event: any) => {
-    const contentType = event.currentTarget.id as ContentType
-
-    this.setState((prevState) => {
-      return({
-        ...prevState,
-        contentType
-      })
-    })
-  }
-
   public render() {
     const { app, contentType, env } = this.state
 
@@ -71,11 +38,44 @@ class ReleasesPage extends Component<{}, ReleasesPageState> {
         />
         {
           contentType === 'releases'
-          ? <ReleasesList env={env} appName={app} />
-          : <ReleasesNotesList />
+            ? <ReleasesList env={env} appName={app} />
+            : <ReleasesNotesList />
         }
       </div>
     )
+  }
+
+  private handleAppChange = (event: any) => {
+    const app = event.target.value as string
+
+    this.setState((prevState) => {
+      return ({
+        ...prevState,
+        app
+      })
+    })
+  }
+
+  private handleEnvChange = (event: any) => {
+    const env = event.target.value as Environment
+
+    this.setState((prevState) => {
+      return ({
+        ...prevState,
+        env
+      })
+    })
+  }
+
+  private handleContentChange = (event: any) => {
+    const contentType = event.currentTarget.id as ContentType
+
+    this.setState((prevState) => {
+      return ({
+        ...prevState,
+        contentType
+      })
+    })
   }
 }
 

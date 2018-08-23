@@ -1,7 +1,7 @@
+import moment from 'moment'
 import { addIndex, filter, map } from 'ramda'
 import React, { Component } from 'react'
 import { compose, graphql, withApollo, WithApolloClient } from 'react-apollo'
-import moment from 'moment'
 import { Spinner } from 'vtex.styleguide'
 
 import Releases from '../queries/Releases.graphql'
@@ -36,10 +36,10 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     super(props)
 
     this.state = {
-      nextPage: 2,
       isLoading: false,
+      lastPage: false,
+      nextPage: 2,
       releases: props.releases.releases,
-      lastPage: false
     }
   }
 
@@ -57,15 +57,29 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     }
   }
 
-  public getPage = (page: number, endDate: string) => {
+  public render() {
+    const { releases: { loading } } = this.props
+    const { releases } = this.state
+
+    if (!releases && !loading) {
+      this.setState((prevState) => {
+        return ({ ...prevState, releases: this.props.releases.releases })
+      })
+      return (this.renderLoading())
+    }
+
+    return (loading ? this.renderLoading() : this.renderReleasesList())
+  }
+
+  private getPage = (page: number, endDate: string) => {
     const { appName, client } = this.props
 
     client.query<ReleasesData>({
       query: Releases,
       variables: {
         appName,
-        page,
-        endDate
+        endDate,
+        page
       }
     }).then((data) => {
       const releases = data.data.releases
@@ -84,7 +98,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     })
   }
 
-  public onScroll = (event: any) => {
+  private onScroll = (event: any) => {
     const { isLoading, lastPage } = this.state
     const element = event.target
     const bottom = element.scrollHeight - element.scrollTop === element.clientHeight
@@ -101,7 +115,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     }
   }
 
-  public renderReleasesList = () => {
+  private renderReleasesList = () => {
     const { isLoading, releases } = this.state
     const { env } = this.props
     const filteredReleases = releases
@@ -150,36 +164,22 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     )
   }
 
-  public renderLoading = () => {
+  private renderLoading = () => {
     return (
       <div className="w-100 flex justify-center bg-light-silver pt4">
         <Spinner />
       </div>
     )
   }
-
-  public render() {
-    const { releases: { loading } } = this.props
-    const { releases } = this.state
-
-    if (!releases && !loading) {
-      this.setState((prevState) => {
-        return ({ ...prevState, releases: this.props.releases.releases })
-      })
-      return (this.renderLoading())
-    }
-
-    return (loading ? this.renderLoading() : this.renderReleasesList())
-  }
 }
 
 const options = {
   name: 'releases',
   options: (props: ReleasesListProps) => ({
+    ssr: false,
     variables: {
       appName: props.appName,
-    },
-    ssr: false
+    }
   }),
 }
 

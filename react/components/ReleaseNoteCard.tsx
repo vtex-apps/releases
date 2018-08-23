@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
 import marked from 'marked'
+import React, { Component } from 'react'
 import { Badge } from 'vtex.styleguide'
 
 import TagIcon from '../icons/TagIcon'

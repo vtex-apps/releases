@@ -1,7 +1,7 @@
-import { ApolloClient, ApolloQueryResult } from 'apollo-client'
+import { ApolloClient } from 'apollo-client'
+import moment from 'moment'
 import { addIndex, map } from 'ramda'
 import React, { Component } from 'react'
-import moment from 'moment'
 import { compose, graphql, withApollo } from 'react-apollo'
 import { Spinner } from 'vtex.styleguide'
 
@@ -56,48 +56,6 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
     }
   }
 
-  public getPage = (page: number) => {
-    const { client } = this.props
-
-    client.query<ReleasesNotesData>({
-      query: ReleasesNotes,
-      variables: { page }
-    }).then((data) => {
-      const releasesNotes = data.data.releasesNotes
-
-      this.setState((prevState) => {
-        return ({
-          ...prevState,
-          isLoading: false,
-          lastPage: releasesNotes.length === 0,
-          releasesNotes: [...prevState.releasesNotes, ...releasesNotes]
-        })
-      })
-    })
-  }
-
-  public onScroll = (event: any) => {
-    const { isLoading, lastPage } = this.state
-    const element = event.target
-    const bottom = element.scrollHeight - element.scrollTop === element.clientHeight
-
-    if (bottom && !isLoading && !lastPage) {
-      this.setState((prevState) => {
-        this.getPage(prevState.nextPage)
-
-        return { isLoading: true, nextPage: prevState.nextPage + 1 }
-      })
-    }
-  }
-
-  public renderLoading = () => {
-    return (
-      <div className="w-100 flex justify-center bg-light-silver pt4">
-        <Spinner />
-      </div>
-    )
-  }
-
   public render() {
     const { isLoading, releasesNotes } = this.state
     const { releasesNotes: { error } } = this.props
@@ -140,6 +98,48 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
       >
         {notesList}
         {isLoading ? this.renderLoading() : null}
+      </div>
+    )
+  }
+
+  private getPage = (page: number) => {
+    const { client } = this.props
+
+    client.query<ReleasesNotesData>({
+      query: ReleasesNotes,
+      variables: { page }
+    }).then((data) => {
+      const releasesNotes = data.data.releasesNotes
+
+      this.setState((prevState) => {
+        return ({
+          ...prevState,
+          isLoading: false,
+          lastPage: releasesNotes.length === 0,
+          releasesNotes: [...prevState.releasesNotes, ...releasesNotes]
+        })
+      })
+    })
+  }
+
+  private onScroll = (event: any) => {
+    const { isLoading, lastPage } = this.state
+    const element = event.target
+    const bottom = element.scrollHeight - element.scrollTop === element.clientHeight
+
+    if (bottom && !isLoading && !lastPage) {
+      this.setState((prevState) => {
+        this.getPage(prevState.nextPage)
+
+        return { isLoading: true, nextPage: prevState.nextPage + 1 }
+      })
+    }
+  }
+
+  private renderLoading = () => {
+    return (
+      <div className="w-100 flex justify-center bg-light-silver pt4">
+        <Spinner />
       </div>
     )
   }

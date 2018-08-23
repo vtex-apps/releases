@@ -1,4 +1,3 @@
-
 declare module '*.graphql' {
   import { DocumentNode } from 'graphql'
 
@@ -7,13 +6,20 @@ declare module '*.graphql' {
 }
 
 declare module 'vtex.styleguide' {
-  const Badge, Button, Dropdown, IconCaretRight, Spinner
+  import { ReactElement } from 'react'
+
+  const Badge: ReactElement
+  const Button: ReactElement
+  const Dropdown: ReactElement
+  const IconCaretRight: ReactElement
+  const Spinner: ReactElement
 
   export { Badge, Button, Dropdown, IconCaretRight, Spinner }
 }
 
 declare module 'render' {
-  const NoSSR
+  import { ReactElement } from 'react'
+  const NoSSR: ReactElement
 
   export { NoSSR }
 }
