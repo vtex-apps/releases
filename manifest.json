@@ -10,6 +10,9 @@
     "smartcheckout"
   ],
   "settingsSchema": {},
+  "scripts": {
+    "postreleasy": "vtex publish --verbose"
+  },
   "dependencies": {
     "vtex.releases-graphql": "0.x",
     "vtex.styleguide": "5.x"
