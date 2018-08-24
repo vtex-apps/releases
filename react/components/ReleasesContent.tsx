@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import NavigationTab from './NavigationTab'
-import Overview from './Overview'
 import ReleasesList from './ReleasesList'
 import ReleasesNotesList from './ReleasesNotesList'
 
@@ -44,13 +43,6 @@ class ReleasesContent extends Component<ReleasesContentProps, ReleasesContentSta
     const { appName, contentType } = this.state
 
     switch (contentType) {
-      case 'overview':
-        return (
-          <Overview
-            appName={appName}
-            handleAppChange={this.handleAppChange}
-          />
-        )
       case 'releases':
         return (
           <ReleasesList

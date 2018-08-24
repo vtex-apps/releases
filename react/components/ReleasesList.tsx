@@ -5,6 +5,7 @@ import { compose, graphql, withApollo, WithApolloClient } from 'react-apollo'
 import { Spinner } from 'vtex.styleguide'
 
 import DeploymentCard from './DeploymentCard'
+import Overview from './Overview'
 import PublicationCard from './PublicationCard'
 import ReleasesListFilter from './ReleasesListFilter'
 import ReleaseTime from './ReleaseTime'
@@ -92,6 +93,10 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
           env={env}
           handleAppChange={handleAppChange}
           handleEnvChange={this.handleEnvChange}
+        />
+        <Overview
+          appName={appName}
+          env={env}
         />
         {
           loading || releases === undefined

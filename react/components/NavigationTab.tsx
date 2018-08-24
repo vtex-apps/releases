@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
+import { injectIntl } from 'react-intl'
 import { Tab, Tabs } from 'vtex.styleguide'
-import { injectIntl } from 'react-intl';
 
 interface Props {
   contentType: string
@@ -16,13 +16,6 @@ class NavigationTab extends Component<Props & ReactIntl.InjectedIntlProps> {
       <Tabs>
         <Tab
           label={intl.formatMessage({
-            id: 'releases.content.overview',
-          })}
-          active={contentType === 'overview'}
-          onClick={() => handleContentChange('overview')}
-        />
-        <Tab
-          label={intl.formatMessage({
             id: 'releases.content.releases',
           })}
           active={contentType === 'releases'}
@@ -34,13 +27,6 @@ class NavigationTab extends Component<Props & ReactIntl.InjectedIntlProps> {
           })}
           active={contentType === 'notes'}
           onClick={() => handleContentChange('notes')}
-        />
-        <Tab
-          label={intl.formatMessage({
-            id: 'releases.content.apps',
-          })}
-          active={contentType === 'apps'}
-          onClick={() => handleContentChange('apps')}
         />
       </Tabs>
     )
