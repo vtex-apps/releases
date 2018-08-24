@@ -15,6 +15,7 @@ interface ReleasesNotesData {
 }
 
 interface ReleasesNotesProps {
+  bottom: boolean
   client: ApolloClient<any>
   releasesNotes: any
 }
@@ -43,7 +44,7 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
   public componentDidUpdate(prevProps: ReleasesNotesProps, _: ReleasesNotesState) {
     const { releasesNotes: { loading: prevLoading } } = prevProps
     const { releasesNotes: curStateNotes } = this.state
-    const { releasesNotes: { releasesNotes: curPropsNotes, loading: curLoading } } = this.props
+    const { bottom, releasesNotes: { releasesNotes: curPropsNotes, loading: curLoading } } = this.props
 
     if (prevLoading && !curLoading && !curStateNotes) {
       this.setState((prevState) => {
@@ -52,6 +53,14 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
           isLoading: false,
           releasesNotes: curPropsNotes
         })
+      })
+    }
+
+    if (!prevProps.bottom && bottom) {
+      this.setState((pState) => {
+        this.getPage(pState.nextPage)
+
+        return { ...pState, isLoading: true, nextPage: pState.nextPage + 1 }
       })
     }
   }
@@ -78,13 +87,11 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
           noteDate.date() !== lastNote.date()
 
         return (
-          <div key={note.cacheId} className="flex flex-row w-100 pl9 pt8 justify-center">
-            <div className="flex flex-column h-100 w5 mr7 pr7">
-              <ReleaseTime
-                canAddDate={addDate}
-                releaseDate={noteDate}
-              />
-            </div>
+          <div key={note.cacheId} className="timeline relative flex flex-row w-100 justify-center pb8">
+            <ReleaseTime
+              canAddDate={addDate}
+              releaseDate={noteDate}
+            />
             <ReleaseNoteCard note={note} />
           </div>
         )
@@ -92,10 +99,7 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
       : []
 
     return (
-      <div
-        className="releases-content w-100 flex flex-row flex-wrap items-center bg-light-silver pv4 overflow-y-scroll overflow-x-hidden"
-        onScroll={this.onScroll}
-      >
+      <div className="pa5 ph8-ns pt8-ns pb6-ns">
         {notesList}
         {isLoading ? this.renderLoading() : null}
       </div>
@@ -122,23 +126,9 @@ class ReleasesNotesList extends Component<ReleasesNotesProps, ReleasesNotesState
     })
   }
 
-  private onScroll = (event: any) => {
-    const { isLoading, lastPage } = this.state
-    const element = event.target
-    const bottom = element.scrollHeight - element.scrollTop === element.clientHeight
-
-    if (bottom && !isLoading && !lastPage) {
-      this.setState((prevState) => {
-        this.getPage(prevState.nextPage)
-
-        return { isLoading: true, nextPage: prevState.nextPage + 1 }
-      })
-    }
-  }
-
   private renderLoading = () => {
     return (
-      <div className="w-100 flex justify-center bg-light-silver pt4">
+      <div className="w-100 flex justify-center pv4">
         <Spinner />
       </div>
     )

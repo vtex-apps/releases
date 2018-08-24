@@ -1,9 +1,10 @@
 import { addIndex, map } from 'ramda'
 import React, { Component } from 'react'
-import { Badge } from 'vtex.styleguide'
+import { FormattedMessage } from 'react-intl'
+import ReactTooltip from 'react-tooltip'
+import Badge from './Badge'
 
 import RefreshIcon from '../icons/RefreshIcon'
-import UserIcon from '../icons/UserIcon'
 
 interface PublicationCardProps {
   publication: Publication
@@ -14,49 +15,51 @@ const mapAuthorWithIndex = addIndex<Author>(map)
 class PublicationCard extends Component<PublicationCardProps> {
   public render() {
     const { publication } = this.props
+    const isBeta = publication.environment === 'beta'
+    const badgeBgColor = isBeta ? 'bg-white ba b--rebel-pink' : 'bg-rebel-pink'
+    const badgeColor = isBeta ? 'rebel-pink' : 'white'
+
     const authors = mapAuthorWithIndex((author: Author, index: number) => {
+      const key = publication.date + author.username + index
       return (
-        <div key={author.username + index} className="pl2">
-          <img className="br-pill" src={author.gravatarURL} />
+        <div key={key} className="pl2">
+          <img data-tip
+            data-for={key}
+            className="br-pill"
+            src={author.gravatarURL}
+          />
+          <ReactTooltip id={key} effect="solid" place="bottom">
+            <span>{author.username}</span>
+          </ReactTooltip>
         </div>
       )
     }, publication.authors)
 
     return (
-      <div className="flex flex-column w-50-ns mw7">
-        <div className="flex flex-row justify-between w-100 bg-white pv3 ph5 br2 br--top">
-          <div className="flex align-start">
-            <span className={'f3 fw5 elite-purple'}>{publication.appName}</span>
-          </div>
-          <div className="flex align-end">
-            <div className="pr2">
-              <Badge>
-                <span className="f5">{publication.version}</span>
-              </Badge>
-            </div>
-            <div className="pl2">
-              <Badge bgColor={`${publication.environment === 'beta' ? '#727273' : '#6A3C9B'}`} color={'#fff'}>
-                <span className="f5">{publication.environment}</span>
-              </Badge>
-            </div>
+      <div className="flex-auto b--silver ba br3 pa5 ph7-ns pv7-ns">
+        <div className="w-100 flex flex-column flex-row-ns justify-between pb4 pb0-ns">
+          <span className="fw4 f4 f3-ns near-black">
+            {publication.appName}
+          </span>
+          <div className="pt4 pt0-ns">
+            <Badge className={`${badgeBgColor} ${badgeColor}`}>
+              {publication.environment}
+            </Badge>
+            <Badge className="ml3 near-black ba b--near-black">
+              {publication.version}
+            </Badge>
           </div>
         </div>
-        <div className="h3 br2 br--bottom bg-elite-purple ph3">
-          <div className="h-100 flex items-center">
-            {authors}
-            <div className="pl3">
-              <Badge>
-                <div className="flex flex-row items-center">
-                  <RefreshIcon /><span className="pl2 f5">From {publication.versionFrom}</span>
-                </div>
-              </Badge>
+        <div className="w-100 mt4">
+          <div className="w-100 flex flex-row justify-between">
+            <div className="flex flex-row">
+              {authors}
             </div>
-            <div className="pl3">
-              <Badge>
-                <div className="flex flex-row items-center">
-                  <UserIcon /><span className="pl2 f5">{publication.authors ? publication.authors[0].username.split('@')[0] : ''}</span>
-                </div>
-              </Badge>
+            <div className="flex flex-row items-center">
+              <RefreshIcon />
+              <span className="pl3 f5 near-black">
+                <FormattedMessage id="releases.card.from" /> {publication.version}
+              </span>
             </div>
           </div>
         </div>

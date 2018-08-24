@@ -10,11 +10,15 @@ declare module 'vtex.styleguide' {
 
   const Badge: ReactElement
   const Button: ReactElement
+  const Checkbox: ReactElement
   const Dropdown: ReactElement
   const IconCaretRight: ReactElement
+  const Tab: ReactElement
+  const Tabs: ReactElement
+  const Radio: ReactElement
   const Spinner: ReactElement
 
-  export { Badge, Button, Dropdown, IconCaretRight, Spinner }
+  export { Badge, Button, Checkbox, Dropdown, IconCaretRight, Tab, Tabs, Radio, Spinner }
 }
 
 declare module 'render' {
@@ -99,12 +103,8 @@ interface ReleaseNote {
 }
 
 interface Statistic {
-  stableLastHour: number,
-  stableLast3Hours: number,
-  stableLast7Days: number,
-  stableLast30Days: number,
-  preReleaseLastHour: number,
-  preReleaseLast3Hours: number,
-  preReleaseLast7Days: number,
-  preReleaseLast30Days: number
+  lastHour: number,
+  last3Hours: number,
+  last7Days: number,
+  last30Days: number
 }

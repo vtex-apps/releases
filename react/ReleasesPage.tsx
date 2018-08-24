@@ -1,82 +1,80 @@
 import React, { Component } from 'react'
+import { graphql } from 'react-apollo'
 
-import ReleasesList from './components/ReleasesList'
-import ReleasesNotesList from './components/ReleasesNotesList'
-import ReleasesSidebar from './components/ReleasesSidebar'
+import ReleasesContent from './components/ReleasesContent'
+
+import Profile from './queries/Profile.graphql'
+
+import SkeletonPiece from './components/SkeletonPiece'
+import LogoutIcon from './icons/LogoutIcon'
+import VtexIcon from './icons/VtexIcon'
 
 import './releases.global.css'
 
-interface ReleasesPageState {
-  app: string
-  contentType: ContentType
-  env: Environment
+interface ProfileData {
+  profile: any
 }
 
-class ReleasesPage extends Component<{}, ReleasesPageState> {
+interface ReleasesPageState {
+  bottom: boolean
+}
+
+class ReleasesPage extends Component<{} & ProfileData, ReleasesPageState> {
   constructor(props: any) {
     super(props)
 
     this.state = {
-      app: 'all',
-      contentType: 'releases',
-      env: 'all'
+      bottom: false
     }
   }
 
   public render() {
-    const { app, contentType, env } = this.state
+    const { profile: { profile } } = this.props
+
+    const firstName = profile
+      ? profile.name.split(' ')[0]
+      : ''
 
     return (
-      <div className="w-100 h-100-ns flex-ns flex-row-ns">
-        <ReleasesSidebar
-          appName={app}
-          contentType={contentType}
-          env={env}
-          handleAppChange={this.handleAppChange}
-          handleContentChange={this.handleContentChange}
-          handleEnvChange={this.handleEnvChange}
-        />
-        {
-          contentType === 'releases'
-            ? <ReleasesList env={env} appName={app} />
-            : <ReleasesNotesList />
-        }
+      <div
+        className="w-100 h-100 bg-light-silver overflow-hidden overflow-y-scroll"
+        onScroll={this.onScroll}
+      >
+        <div className="w-100 flex flex-row flex-none justify-between pa7-ns pt5 pl5 pr5 pb7 items-center" >
+          <VtexIcon />
+          <div className="flex flex-row items-center justify-center">
+            {firstName ? <p>{firstName}</p> : <SkeletonPiece />}
+            <div
+              className="pl3 pointer"
+              onClick={this.logout}>
+              <LogoutIcon />
+            </div>
+          </div>
+        </div>
+        <ReleasesContent bottom={this.state.bottom} />
       </div>
     )
   }
 
-  private handleAppChange = (event: any) => {
-    const app = event.target.value as string
-
-    this.setState((prevState) => {
-      return ({
-        ...prevState,
-        app
-      })
-    })
+  private logout = () => {
+    window.location.href = '/admin/logout?redirectUrl=releases'
   }
 
-  private handleEnvChange = (event: any) => {
-    const env = event.target.value as Environment
+  private onScroll = (event: any) => {
+    const element = event.target
+    const bottom = element.scrollHeight - element.scrollTop === element.clientHeight
 
-    this.setState((prevState) => {
-      return ({
-        ...prevState,
-        env
-      })
-    })
-  }
-
-  private handleContentChange = (event: any) => {
-    const contentType = event.currentTarget.id as ContentType
-
-    this.setState((prevState) => {
-      return ({
-        ...prevState,
-        contentType
-      })
-    })
+    if (bottom) {
+      this.setState({ bottom: true })
+    } else if (this.state.bottom) {
+      this.setState({ bottom: false })
+    }
   }
 }
 
-export default ReleasesPage
+export default graphql<ProfileData>(Profile, {
+  name: 'profile',
+  options: {
+    ssr: false
+  }
+})(ReleasesPage)

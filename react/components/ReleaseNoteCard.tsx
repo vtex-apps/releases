@@ -1,9 +1,9 @@
 import marked from 'marked'
 import React, { Component } from 'react'
-import { Badge } from 'vtex.styleguide'
+import ReactTooltip from 'react-tooltip'
+import Badge from './Badge'
 
 import TagIcon from '../icons/TagIcon'
-import UserIcon from '../icons/UserIcon'
 
 interface ReleaseNoteCardProps {
   note: ReleaseNote
@@ -15,25 +15,43 @@ class ReleaseNoteCard extends Component<ReleaseNoteCardProps> {
     const markdownDescription = marked(note.description)
 
     return (
-      <div className="flex flex-column w-50-ns mw7 bg-white pa4">
-        <div className="w-100 br3 br--top f3 fw5">
-          <span className="heavy-blue">{note.appName}</span><span className="blue"> - {note.title}</span>
-        </div>
-        <div className="w-100 h3 pv4 flex flex-row items-center align-start">
-          <img className="h-100 br-pill" src={note.author.gravatarURL} />
-          <div className="pl3">
-            <Badge>
+      <div className="flex-auto b--silver ba br3 pa5 ph7-ns pv7-ns">
+        <div className="w-100 flex flex-column flex-row-l justify-between pb4 pb0-l">
+          <div className="w-75">
+            <span className="fw4 f3 near-black">
+              {note.appName}
+            </span>
+            <span className="db pt3 lh-title c-muted-1 pb4">
+              {note.title}
+            </span>
+          </div>
+          <div className="pt4 pt0-l">
+            <Badge className="near-black ba b--near-black">
               <TagIcon /><span className="f5 pl2">{note.version}</span>
             </Badge>
           </div>
-          <div className="pl3">
-            <Badge>
-              <UserIcon /><span className="f5 pl2">{note.author.username}</span>
-            </Badge>
-          </div>
         </div>
-        <div className="w-100 br3 br--bottom">
-          <div className="near-black" dangerouslySetInnerHTML={{ __html: markdownDescription }}></div>
+        <div className="w-100 mt4">
+          <div className="w-100 flex flex-row justify-between">
+            <div className="flex flex-row">
+              <img
+                className="br-pill w-auto"
+                data-tip data-for={note.date + note.appName}
+                src={note.author.gravatarURL}
+                style={{ height: '40px' }}
+              />
+              <ReactTooltip
+                id={note.date + note.appName}
+                effect="solid"
+                place="bottom"
+              >
+                <span>{note.author.username}</span>
+              </ReactTooltip>
+            </div>
+          </div>
+          <div className="w-100 br3 br--bottom pt3">
+            <div className="near-black f5 lh-title list" dangerouslySetInnerHTML={{ __html: markdownDescription }}></div>
+          </div>
         </div>
       </div>
     )

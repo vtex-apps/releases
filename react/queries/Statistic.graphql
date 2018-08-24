@@ -1,12 +1,8 @@
-query Statistic($appName: String = "") {
-  statistic(appName: $appName) {
-    stableLastHour
-    stableLast3Hours
-    stableLast7Days
-    stableLast30Days
-    preReleaseLastHour
-    preReleaseLast3Hours
-    preReleaseLast7Days
-    preReleaseLast30Days
+query Statistic($appName: String = "", $env: String = "") {
+  statistic(appName: $appName, env: $env) {
+    lastHour
+    last3Hours
+    last7Days
+    last30Days
   }
 }
