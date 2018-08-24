@@ -34,7 +34,7 @@ class ReleasesPage extends Component<{} & ProfileData, ReleasesPageState> {
     const firstName = profile
       ? profile.name.split(' ')[0]
       : ''
-    console.log(this.state.bottom)
+
     return (
       <div
         className="w-100 h-100 bg-light-silver overflow-hidden overflow-y-scroll"
