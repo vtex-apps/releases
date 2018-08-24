@@ -17,16 +17,7 @@ interface FilterProps {
   handleEnvChange: (event: any) => void
 }
 
-interface ProjectListOptions {
-  label: JSX.Element | string
-  value: string
-}
-
 class ReleasesListFilter extends Component<ProjectsData & FilterProps & ReactIntl.InjectedIntlProps> {
-  constructor(props: any) {
-    super(props)
-  }
-
   public render() {
     const {
       appName,
@@ -40,8 +31,8 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps & ReactInt
     const projectOptions = concat(
       [
         {
-          value: 'all',
-          label: intl.formatMessage({ id: 'releases.filter.allProjects' })
+          label: intl.formatMessage({ id: 'releases.filter.allProjects' }),
+          value: 'all'
         }
       ],
       map((project: Project) => {
@@ -59,7 +50,7 @@ class ReleasesListFilter extends Component<ProjectsData & FilterProps & ReactInt
           />
         </div>
         <div className="flex flex-row-ns pt4 justify-start">
-        <div className="pr4">
+          <div className="pr4">
             <Radio
               checked={env === 'all'}
               id="all"

@@ -23,9 +23,9 @@ class Overview extends Component<WithApolloClient<StatisticData> & OverviewProps
     const { statistic: { loading, statistic } } = this.props
 
     const statisticNumbers = [
-      statistic ? statistic.lastHour : 0, 
-      statistic ? statistic.last3Hours : 0, 
-      statistic ? statistic.last7Days : 0, 
+      statistic ? statistic.lastHour : 0,
+      statistic ? statistic.last3Hours : 0,
+      statistic ? statistic.last7Days : 0,
       statistic ? statistic.last30Days : 0
     ]
     const statisticElements = mapWithIndex((stat: number, index: number) => {
@@ -38,9 +38,9 @@ class Overview extends Component<WithApolloClient<StatisticData> & OverviewProps
             </span>
           </div>
           <div className="flex justify-center">
-            {loading 
-              ? <SkeletonPiece color="light-silver" height={5} width={3}/> 
-              : <span className="f2 fw5">{stat}</span> }
+            {loading
+              ? <SkeletonPiece color="light-silver" height={5} width={3} />
+              : <span className="f2 fw5">{stat}</span>}
           </div>
         </div>
       )

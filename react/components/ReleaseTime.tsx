@@ -1,7 +1,7 @@
+import moment, { Moment } from 'moment'
 import React, { Component, Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { NoSSR } from 'render'
-import moment, { Moment } from 'moment'
 
 import SkeletonPiece from './SkeletonPiece'
 
@@ -11,30 +11,6 @@ interface ReleaseTimeProps {
 }
 
 class ReleaseTime extends Component<ReleaseTimeProps> {
-  public renderDate = (date: Moment) => {
-    const curDate = moment(Date.now())
-    const curYear = curDate.year()
-
-    return (
-      <div className="z-1 bg-white flex pt4 flex-column pb2 pa0-ns mr6-ns items-center">
-        <span className="f2-ns f3 fw3 rebel-pink lh-solid">{date.date()}</span>
-        <span className="f4-ns f6 fw5 black lh-title">
-          <FormattedMessage id={`releases.date.months.${date.month()}`} />
-        </span>
-        {curYear !== date.year() ? <span className="f3 fw5 light-gray">{date.year()}</span> : null}
-      </div>
-    )
-  }
-
-  public renderSkeleton = () => {
-    return (
-      <Fragment>
-        <SkeletonPiece width={100} />
-        <SkeletonPiece width={50} />
-      </Fragment>
-    )
-  }
-
   public render() {
     const { canAddDate, releaseDate } = this.props
     return (
@@ -49,6 +25,30 @@ class ReleaseTime extends Component<ReleaseTimeProps> {
           </div>
         </div>
       </NoSSR>
+    )
+  }
+
+  private renderDate = (date: Moment) => {
+    const curDate = moment(Date.now())
+    const curYear = curDate.year()
+
+    return (
+      <div className="z-1 bg-white flex pt4 flex-column pb2 pa0-ns mr6-ns items-center">
+        <span className="f2-ns f3 fw3 rebel-pink lh-solid">{date.date()}</span>
+        <span className="f4-ns f6 fw5 black lh-title">
+          <FormattedMessage id={`releases.date.months.${date.month()}`} />
+        </span>
+        {curYear !== date.year() ? <span className="f3 fw5 light-gray">{date.year()}</span> : null}
+      </div>
+    )
+  }
+
+  private renderSkeleton = () => {
+    return (
+      <Fragment>
+        <SkeletonPiece width={100} />
+        <SkeletonPiece width={50} />
+      </Fragment>
     )
   }
 }

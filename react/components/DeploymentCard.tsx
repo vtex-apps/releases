@@ -57,7 +57,7 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
             className="br-pill"
             src={author.gravatarURL}
           />
-          <ReactTooltip id={key} effect='solid' place='bottom'>
+          <ReactTooltip id={key} effect="solid" place="bottom">
             <span>{author.username}</span>
           </ReactTooltip>
         </div>
@@ -74,7 +74,7 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
             <Badge className={`${badgeBgColor} ${badgeColor}`}>
               {deployment.environment}
             </Badge>
-            <Badge className={"ml3 near-black ba b--near-black"}>
+            <Badge className="ml3 near-black ba b--near-black">
               {deployment.version}
             </Badge>
           </div>
@@ -89,7 +89,7 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
               <span className="dn-s db-ns pl3 f5 near-black">{commitText}</span>
               <span className="dn-ns pl3 f5 near-black">{deployment.commitsTotal}</span>
               <div className="w4 nr5 nr0-ns">
-                <Button variation='tertiary' onClick={this.onExpandClick}>
+                <Button variation="tertiary" onClick={this.onExpandClick}>
                   {isOpen
                     ? <FormattedMessage id="releases.card.button.collapse" />
                     : <FormattedMessage id="releases.card.button.expand" />
@@ -135,7 +135,7 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
   }
 
   private onExpandClick = () => {
-    this.setState((prevState) => { 
+    this.setState((prevState) => {
       const isOpen = !prevState.isOpen
       const isLoading = isOpen
 
@@ -168,8 +168,8 @@ class DeploymentCard extends Component<WithApolloClient<DeploymentCardProps>, De
       ? mapDependenciesWithIndex((dependency: Dependency, index: number) => {
         return (
           <div key={dependency.name + dependency.version + index} className="dib">
-            <div className="br-pill pv2 ph3 bg-muted-5 ma2 f6"  style={{ wordBreak: 'break-all' }} >
-                 {dependency.name} - {dependency.version}
+            <div className="br-pill pv2 ph3 bg-muted-5 ma2 f6" style={{ wordBreak: 'break-all' }} >
+              {dependency.name} - {dependency.version}
             </div>
           </div>
         )

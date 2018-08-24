@@ -42,8 +42,8 @@ class ReleaseNoteCard extends Component<ReleaseNoteCardProps> {
               />
               <ReactTooltip
                 id={note.date + note.appName}
-                effect='solid'
-                place='bottom'
+                effect="solid"
+                place="bottom"
               >
                 <span>{note.author.username}</span>
               </ReactTooltip>

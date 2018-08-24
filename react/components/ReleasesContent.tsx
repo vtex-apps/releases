@@ -24,40 +24,6 @@ class ReleasesContent extends Component<ReleasesContentProps, ReleasesContentSta
     }
   }
 
-  public handleAppChange = (event: any) => {
-    const appName = event.target.value as string
-
-    this.setState((prevState) => {
-      return ({
-        ...prevState,
-        appName
-      })
-    })
-  }
-
-  public handleContentChange = (contentType: string) => {
-    this.setState({ contentType })
-  }
-
-  public selectContent = () => {
-    const { appName, contentType } = this.state
-
-    switch (contentType) {
-      case 'releases':
-        return (
-          <ReleasesList
-            appName={appName}
-            handleAppChange={this.handleAppChange}
-            bottom={this.props.bottom}
-          />
-        )
-      case 'notes':
-        return <ReleasesNotesList bottom={this.props.bottom}/>
-      default:
-        return null
-    }
-  }
-
   public render() {
     const { contentType } = this.state
 
@@ -83,6 +49,40 @@ class ReleasesContent extends Component<ReleasesContentProps, ReleasesContentSta
         </div>
       </div>
     )
+  }
+
+  private handleAppChange = (event: any) => {
+    const appName = event.target.value as string
+
+    this.setState((prevState) => {
+      return ({
+        ...prevState,
+        appName
+      })
+    })
+  }
+
+  private handleContentChange = (contentType: string) => {
+    this.setState({ contentType })
+  }
+
+  private selectContent = () => {
+    const { appName, contentType } = this.state
+
+    switch (contentType) {
+      case 'releases':
+        return (
+          <ReleasesList
+            appName={appName}
+            handleAppChange={this.handleAppChange}
+            bottom={this.props.bottom}
+          />
+        )
+      case 'notes':
+        return <ReleasesNotesList bottom={this.props.bottom} />
+      default:
+        return null
+    }
   }
 }
 

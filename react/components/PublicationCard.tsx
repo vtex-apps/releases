@@ -28,7 +28,7 @@ class PublicationCard extends Component<PublicationCardProps> {
             className="br-pill"
             src={author.gravatarURL}
           />
-          <ReactTooltip id={key} effect='solid' place='bottom'>
+          <ReactTooltip id={key} effect="solid" place="bottom">
             <span>{author.username}</span>
           </ReactTooltip>
         </div>
@@ -45,7 +45,7 @@ class PublicationCard extends Component<PublicationCardProps> {
             <Badge className={`${badgeBgColor} ${badgeColor}`}>
               {publication.environment}
             </Badge>
-            <Badge className={"ml3 near-black ba b--near-black"}>
+            <Badge className="ml3 near-black ba b--near-black">
               {publication.version}
             </Badge>
           </div>
