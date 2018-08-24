@@ -1,0 +1,15 @@
+query ReleasesNotes($page: Int = 1) {
+  releasesNotes(page: $page) {
+    appName
+    author {
+      gravatarURL
+      username
+    }
+    date
+    description
+    cacheId
+    title
+    url
+    version
+  }
+}
