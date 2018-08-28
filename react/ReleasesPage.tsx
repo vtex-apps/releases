@@ -57,7 +57,7 @@ class ReleasesPage extends Component<{} & ProfileData, ReleasesPageState> {
   }
 
   private logout = () => {
-    window.location.href = '/admin/logout?redirectUrl=/releases'
+    window.location.href = '/admin/logout?redirectUrl=/'
   }
 
   private onScroll = (event: any) => {

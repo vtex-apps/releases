@@ -1,7 +1,7 @@
 {
   "pages": {
     "releases": {
-      "path": "/releases"
+      "path": "/"
     }
   },
   "extensions": {
