@@ -28,6 +28,17 @@ class ReleasesPage extends Component<{} & ProfileData, ReleasesPageState> {
     }
   }
 
+  public componentDidUpdate() {
+    const { profile: { error } } = this.props
+
+    if (error) {
+      const { graphQLErrors } = error
+      const authError = graphQLErrors && graphQLErrors.length > 0 && graphQLErrors.find(e => e.extensions.code === 'UNAUTHENTICATED')
+      console.log('Authentication error, redirecting to login', authError)
+      window.location.href = '/_v/auth-server/v1/login?ReturnUrl=%2F'
+    }
+  }
+
   public render() {
     const { profile: { profile } } = this.props
 
