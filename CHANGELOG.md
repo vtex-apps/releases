@@ -7,11 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Refact project to use new majors of `store`, `messages` and `react` builders.
+
 ## [0.3.0] - 2018-09-14
+
 ### Fixed
+
 - Redirect to login if user is not authenticated.
 
 ## [0.2.3] - 2018-08-31
-### Changed
-- Add auth required on root path.
 
+### Changed
+
+- Add auth required on root path.

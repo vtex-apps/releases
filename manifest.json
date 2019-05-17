@@ -5,20 +5,16 @@
   "title": "Releases",
   "description": "Notification central for apps release notes",
   "mustUpdateAt": "2019-08-02",
-  "categories": [],
-  "registries": [
-    "smartcheckout"
-  ],
-  "settingsSchema": {},
   "scripts": {
     "postreleasy": "vtex publish --verbose"
   },
   "dependencies": {
     "vtex.releases-graphql": "0.x",
-    "vtex.styleguide": "5.x"
+    "vtex.styleguide": "9.x"
   },
   "builders": {
-    "pages": "0.x",
-    "react": "2.x"
+    "pages": "1.x",
+    "react": "3.x",
+    "messages": "1.x"
   }
 }

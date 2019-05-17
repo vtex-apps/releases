@@ -2,6 +2,9 @@ import moment from 'moment'
 import { addIndex, filter, map } from 'ramda'
 import React, { Component } from 'react'
 import { compose, graphql, withApollo, WithApolloClient } from 'react-apollo'
+import { injectIntl } from 'react-intl'
+
+import { Helmet } from 'vtex.render-runtime'
 import { Spinner } from 'vtex.styleguide'
 
 import DeploymentCard from './DeploymentCard'
@@ -36,7 +39,12 @@ interface ReleasesListState {
 
 const mapReleasesWithIndex = addIndex<Release>(map)
 
-class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesListProps, ReleasesListState> {
+class ReleasesList extends Component<
+  WithApolloClient<ReleasesData> &
+    ReleasesListProps &
+    ReactIntl.InjectedIntlProps,
+  ReleasesListState
+> {
   constructor(props: any) {
     super(props)
 
@@ -49,32 +57,41 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
     }
   }
 
-  public componentDidUpdate(prevProps: ReleasesListProps, prevState: ReleasesListState) {
-    const { appName, bottom, releases: { releases: curReleases } } = this.props
+  public componentDidUpdate(
+    prevProps: ReleasesListProps,
+    prevState: ReleasesListState
+  ) {
+    const {
+      appName,
+      bottom,
+      releases: { releases: curReleases },
+    } = this.props
     const { releases: prevReleasesState } = prevState
     const { releases } = this.state
 
     if (prevProps.appName !== appName) {
-      this.setState((pState) => {
-        return ({
+      this.setState(pState => {
+        return {
           ...pState,
           lastPage: false,
-          releases: undefined
-        })
+          releases: undefined,
+        }
       })
     }
 
     if (!prevReleasesState && !releases && curReleases) {
-      this.setState((pState) => {
-        return ({ ...pState, releases: curReleases })
+      this.setState(pState => {
+        return { ...pState, releases: curReleases }
       })
     }
 
     if (!prevProps.bottom && bottom) {
-      this.setState((pState) => {
+      this.setState(pState => {
         const nextPage = pState.nextPage
         const currReleases = pState.releases as Release[]
-        const endDate = currReleases.length ? currReleases[currReleases.length - 1].date : ''
+        const endDate = currReleases.length
+          ? currReleases[currReleases.length - 1].date
+          : ''
         this.getPage(nextPage, endDate)
 
         return { ...pState, isLoading: true, nextPage: nextPage + 1 }
@@ -83,26 +100,31 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
   }
 
   public render() {
-    const { appName, handleAppChange, releases: { loading } } = this.props
+    const {
+      appName,
+      handleAppChange,
+      releases: { loading },
+      intl,
+    } = this.props
     const { env, releases } = this.state
 
     return (
       <div>
+        <Helmet
+          title={intl.formatMessage({
+            id: 'releases.content.releases',
+          })}
+        />
         <ReleasesListFilter
           appName={appName}
           env={env}
           handleAppChange={handleAppChange}
           handleEnvChange={this.handleEnvChange}
         />
-        <Overview
-          appName={appName}
-          env={env}
-        />
-        {
-          loading || releases === undefined
-            ? this.renderLoading()
-            : this.renderReleasesList()
-        }
+        <Overview appName={appName} env={env} />
+        {loading || releases === undefined
+          ? this.renderLoading()
+          : this.renderReleasesList()}
       </div>
     )
   }
@@ -110,7 +132,7 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
   private handleEnvChange = (event: any) => {
     const newEnv = event.target.value
 
-    this.setState((prevState) => {
+    this.setState(prevState => {
       return { ...prevState, env: newEnv }
     })
   }
@@ -118,28 +140,28 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
   private getPage = (page: number, endDate: string) => {
     const { appName, client } = this.props
 
-    client.query<ReleasesData>({
-      query: Releases,
-      variables: {
-        appName,
-        endDate,
-        page
-      }
-    }).then((data) => {
-      const releases = data.data.releases
+    client
+      .query<ReleasesData>({
+        query: Releases,
+        variables: {
+          appName,
+          endDate,
+          page,
+        },
+      })
+      .then(data => {
+        const releases = data.data.releases
 
-      this.setState((prevState) => {
-        const prevReleases = prevState.releases
-          ? [...prevState.releases]
-          : []
-        return ({
-          ...prevState,
-          isLoading: false,
-          lastPage: releases.length === 0,
-          releases: [...prevReleases, ...releases]
+        this.setState(prevState => {
+          const prevReleases = prevState.releases ? [...prevState.releases] : []
+          return {
+            ...prevState,
+            isLoading: false,
+            lastPage: releases.length === 0,
+            releases: [...prevReleases, ...releases],
+          }
         })
       })
-    })
   }
 
   private renderReleasesList = () => {
@@ -147,39 +169,39 @@ class ReleasesList extends Component<WithApolloClient<ReleasesData> & ReleasesLi
 
     const filteredReleases = releases
       ? filter((release: Release) => {
-        return env === 'all' || release.environment === env
-      }, releases)
+          return env === 'all' || release.environment === env
+        }, releases)
       : []
 
     const releasesList = releases
       ? mapReleasesWithIndex((release: Release, index: number) => {
-        const releaseDate = moment(new Date(release.date))
+          const releaseDate = moment(new Date(release.date))
 
-        const lastRelease = index !== 0
-          ? moment(new Date(releases[index - 1].date))
-          : null
+          const lastRelease =
+            index !== 0 ? moment(new Date(releases[index - 1].date)) : null
 
-        const addDate =
-          index === 0 ||
-          lastRelease !== null &&
-          releaseDate.date() !== lastRelease.date()
+          const addDate =
+            index === 0 ||
+            (lastRelease !== null && releaseDate.date() !== lastRelease.date())
 
-        return (
-          <div key={release.cacheId} className="timeline relative flex flex-row w-100 justify-center pb8">
-            <ReleaseTime
-              canAddDate={addDate}
-              releaseDate={releaseDate}
-            />
-            {release.type === 'deployment'
-              ? <DeploymentCard deployment={release as Deployment} />
-              : <PublicationCard publication={release as Publication} />}
-          </div>
-        )
-      }, filteredReleases)
+          return (
+            <div
+              key={release.cacheId}
+              className="timeline relative flex flex-row w-100 justify-center pb8"
+            >
+              <ReleaseTime canAddDate={addDate} releaseDate={releaseDate} />
+              {release.type === 'deployment' ? (
+                <DeploymentCard deployment={release as Deployment} />
+              ) : (
+                <PublicationCard publication={release as Publication} />
+              )}
+            </div>
+          )
+        }, filteredReleases)
       : null
 
     return (
-      <div className="pa5 ph8-ns pv6-ns" >
+      <div className="pa5 ph8-ns pv6-ns">
         {releasesList}
         {isLoading ? this.renderLoading() : null}
       </div>
@@ -201,11 +223,12 @@ const options = {
     ssr: false,
     variables: {
       appName: props.appName,
-    }
+    },
   }),
 }
 
 export default compose(
+  injectIntl,
   withApollo,
-  graphql<ReleasesListProps, ReleasesData, ReleasesQuery>(Releases, options),
+  graphql<ReleasesListProps, ReleasesData, ReleasesQuery>(Releases, options)
 )(ReleasesList)

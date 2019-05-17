@@ -24,40 +24,43 @@ class ReleasesPage extends Component<{} & ProfileData, ReleasesPageState> {
     super(props)
 
     this.state = {
-      bottom: false
+      bottom: false,
     }
   }
 
   public componentDidUpdate() {
-    const { profile: { error } } = this.props
+    const {
+      profile: { error },
+    } = this.props
 
     if (error) {
       const { graphQLErrors } = error
-      const authError = graphQLErrors && graphQLErrors.length > 0 && graphQLErrors.find(e => e.extensions.code === 'UNAUTHENTICATED')
+      const authError =
+        graphQLErrors &&
+        graphQLErrors.length > 0 &&
+        graphQLErrors.find((e: any) => e.extensions.code === 'UNAUTHENTICATED')
       console.log('Authentication error, redirecting to login', authError)
-      window.location.href = '/_v/auth-server/v1/login?ReturnUrl=%2F'
+      window.location.href = '/_v/segment/admin-login/v1/login?ReturnUrl=%2F'
     }
   }
 
   public render() {
-    const { profile: { profile } } = this.props
+    const {
+      profile: { profile },
+    } = this.props
 
-    const firstName = profile
-      ? profile.name.split(' ')[0]
-      : ''
+    const firstName = profile ? profile.name.split(' ')[0] : ''
 
     return (
       <div
         className="w-100 h-100 bg-light-silver overflow-hidden overflow-y-scroll"
         onScroll={this.onScroll}
       >
-        <div className="w-100 flex flex-row flex-none justify-between pa7-ns pt5 pl5 pr5 pb7 items-center" >
+        <div className="w-100 flex flex-row flex-none justify-between pa7-ns pt5 pl5 pr5 pb7 items-center">
           <VtexIcon />
           <div className="flex flex-row items-center justify-center">
             {firstName ? <p>{firstName}</p> : <SkeletonPiece />}
-            <div
-              className="pl3 pointer"
-              onClick={this.logout}>
+            <div className="pl3 pointer" onClick={this.logout}>
               <LogoutIcon />
             </div>
           </div>
@@ -73,7 +76,8 @@ class ReleasesPage extends Component<{} & ProfileData, ReleasesPageState> {
 
   private onScroll = (event: any) => {
     const element = event.target
-    const bottom = element.scrollHeight - element.scrollTop === element.clientHeight
+    const bottom =
+      element.scrollHeight - element.scrollTop === element.clientHeight
 
     if (bottom) {
       this.setState({ bottom: true })
@@ -86,6 +90,6 @@ class ReleasesPage extends Component<{} & ProfileData, ReleasesPageState> {
 export default graphql<ProfileData>(Profile, {
   name: 'profile',
   options: {
-    ssr: false
-  }
+    ssr: false,
+  },
 })(ReleasesPage)

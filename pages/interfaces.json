@@ -1,0 +1,8 @@
+{
+  "releases": {
+    "component": "*"
+  },
+  "releases.home": {
+    "component": "ReleasesPage"
+  }
+}
