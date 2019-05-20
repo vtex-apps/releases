@@ -1,7 +1,7 @@
 import moment, { Moment } from 'moment'
 import React, { Component, Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { NoSSR } from 'render'
+import { NoSSR } from 'vtex.render-runtime'
 
 import SkeletonPiece from './SkeletonPiece'
 
@@ -16,12 +16,11 @@ class ReleaseTime extends Component<ReleaseTimeProps> {
     return (
       <NoSSR onSSR={this.renderSkeleton()}>
         <div className="flex flex-column flex-none flex-row-ns justify-center justify-end-ns mr7-ns w4-ns pr4 pr0-ns">
-          {canAddDate ?
-            this.renderDate(releaseDate)
-            : null
-          }
+          {canAddDate ? this.renderDate(releaseDate) : null}
           <div className="z-1 flex h3-ns self-center self-start-ns">
-            <span className="f6 f4-ns bg-white fw5 gray silver-ns self-end-ns lh-copy pv4 pv0-ns">{releaseDate.format('HH:mm')}</span>
+            <span className="f6 f4-ns bg-white fw5 gray silver-ns self-end-ns lh-copy pv4 pv0-ns">
+              {releaseDate.format('HH:mm')}
+            </span>
           </div>
         </div>
       </NoSSR>
@@ -38,7 +37,9 @@ class ReleaseTime extends Component<ReleaseTimeProps> {
         <span className="f4-ns f6 fw5 black lh-title">
           <FormattedMessage id={`releases.date.months.${date.month()}`} />
         </span>
-        {curYear !== date.year() ? <span className="f3 fw5 light-gray">{date.year()}</span> : null}
+        {curYear !== date.year() ? (
+          <span className="f3 fw5 light-gray">{date.year()}</span>
+        ) : null}
       </div>
     )
   }
