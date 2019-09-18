@@ -40,7 +40,7 @@ class ReleasesPage extends Component<{} & ProfileData, ReleasesPageState> {
         graphQLErrors.length > 0 &&
         graphQLErrors.find((e: any) => e.extensions.code === 'UNAUTHENTICATED')
       console.log('Authentication error, redirecting to login', authError)
-      window.location.href = '/_v/segment/admin-login/v1/login?ReturnUrl=%2F'
+      window.location.href = '/_v/segment/admin-login/v1/login?returnUrl=%2F'
     }
   }
 
