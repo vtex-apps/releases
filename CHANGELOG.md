@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Page renderization when profile is undefined.
+
 ## [1.0.2] - 2019-12-27
 
 ## [1.0.1] - 2019-09-18
