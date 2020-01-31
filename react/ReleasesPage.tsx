@@ -49,7 +49,7 @@ class ReleasesPage extends Component<{} & ProfileData, ReleasesPageState> {
       profile: { profile },
     } = this.props
 
-    const firstName = profile ? profile.name.split(' ')[0] : ''
+    const firstName = profile && profile.name ? profile.name.split(' ')[0] : ''
 
     return (
       <div
