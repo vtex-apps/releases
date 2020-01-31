@@ -1,7 +1,7 @@
 {
   "name": "releases",
   "vendor": "vtex",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "title": "Releases",
   "description": "Notification central for apps release notes",
   "mustUpdateAt": "2019-08-02",
